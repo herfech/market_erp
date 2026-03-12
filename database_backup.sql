@@ -292,7 +292,6 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('xvtflp1e3r9sr4n8th89nbz3q3lh7fgf','.eJxVjDsOwjAQBe_iGln-xN6Ykj5nsNbrDQ4gR4qTCnF3EikFtG9m3ltE3NYSt8ZLnLK4CiMuv1tCenI9QH5gvc-S5rouU5KHIk_a5DBnft1O9--gYCt7TcDogrZKhQwdsLbQWTJggs7MinvvAUertNP9bpgxpwDglXWQiMmJzxfBmzcl:1w0hua:Sp3xw2QGIXBJq8cwqEE1Q-TL55oqUClRXsJzl6ZfOY8','2026-03-26 15:25:20.203217');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -409,4 +408,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-12 18:54:37
+-- Dump completed on 2026-03-12 20:25:06
