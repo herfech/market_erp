@@ -10,4 +10,4 @@ def dashboard(request):
         'total_products': total_products,
         'today_sales': today_sales,
     }
-    return render(request, 'dashboard.html', context)
+    return render(request, 'sales/dashboard.html', context)

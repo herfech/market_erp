@@ -126,18 +126,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'login'
 
-# Al final de config/settings.py
+
 
 from django.db.backends.mysql.base import DatabaseWrapper
-# 1. Engañamos a la verificación de versión
 DatabaseWrapper.check_database_version_supported = lambda self: None
-
-# 2. Forzamos a que NO use 'RETURNING'
 from django.db.backends.base.features import BaseDatabaseFeatures
 BaseDatabaseFeatures.can_return_columns_from_insert = property(lambda self: False)
 BaseDatabaseFeatures.can_return_rows_from_bulk_insert = property(lambda self: False)
-
-# 3. Forzamos la versión de la base de datos en el wrapper
 DatabaseWrapper.display_name = 'MariaDB'
 DatabaseWrapper.data_types['datetime'] = 'datetime(6)'
