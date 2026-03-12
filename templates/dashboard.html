@@ -1,0 +1,33 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Ana Sayfa{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h2>Yönetim Paneli (Dashboard)</h2>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Ürün Sayısı</h5>
+                <p class="card-text fs-2">{{ total_products }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Bugünkü Satışlar</h5>
+                <p class="card-text fs-2">{{ today_sales }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="/admin" class="btn btn-secondary">Yönetim Paneline Git (Admin)</a>
+</div>
+{% endblock %}
