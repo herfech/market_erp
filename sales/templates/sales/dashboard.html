@@ -1,33 +1,74 @@
 {% extends 'layout/base.html' %}
 
-{% block title %}Ana Sayfa{% endblock %}
+{% block title %}Yönetim Paneli{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12 mb-4">
-        <h2>Yönetim Paneli (Dashboard)</h2>
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2 class="fw-bold text-dark">Yönetim Paneli</h2>
+        <p class="text-muted small">Marketinizin genel durumu ve özet verileri.</p>
     </div>
-    
+</div>
+
+<div class="row g-4">
     <div class="col-md-4">
-        <div class="card text-white bg-primary mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Ürün Sayısı</h5>
-                <p class="card-text fs-2">{{ total_products }}</p>
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <div class="rounded-circle bg-soft-primary p-3">
+                        <i class="bi bi-box-seam text-primary fs-4"></i>
+                    </div>
+                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill">+2 Yeni</span>
+                </div>
+                <h6 class="text-muted fw-medium text-uppercase small">Toplam Ürün Sayısı</h6>
+                <h2 class="fw-bold mb-0 mt-2">{{ total_products }}</h2>
             </div>
         </div>
     </div>
-    
+
     <div class="col-md-4">
-        <div class="card text-white bg-success mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Bugünkü Satışlar</h5>
-                <p class="card-text fs-2">{{ today_sales }}</p>
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <div class="rounded-circle bg-soft-primary p-3" style="background-color: #fef3c7;">
+                        <i class="bi bi-cart-check text-warning fs-4"></i>
+                    </div>
+                    <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill">Bugün</span>
+                </div>
+                <h6 class="text-muted fw-medium text-uppercase small">Bugünkü Satışlar</h6>
+                <h2 class="fw-bold mb-0 mt-2">{{ today_sales }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 bg-dark text-white">
+            <div class="card-body p-4 d-flex flex-column justify-content-center">
+                <h6 class="text-white-50 small mb-3 text-uppercase">Hızlı Aksiyon</h6>
+                <div class="d-grid gap-2">
+                    <a href="/admin/products/product/add/" class="btn btn-primary rounded-pill btn-sm">
+                        <i class="bi bi-plus-lg me-1"></i> Yeni Ürün Ekle
+                    </a>
+                    <a href="/admin" class="btn btn-outline-light rounded-pill btn-sm">
+                        <i class="bi bi-gear me-1"></i> Gelişmiş Ayarlar
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="mt-4">
-    <a href="/admin" class="btn btn-secondary">Yönetim Paneline Git (Admin)</a>
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 py-3">
+                <h5 class="fw-bold mb-0">Performans Özeti</h5>
+            </div>
+            <div class="card-body text-center py-5">
+                <i class="bi bi-bar-chart-line text-muted opacity-25" style="font-size: 4rem;"></i>
+                <p class="text-muted mt-3">Verileriniz işleniyor... Grafik yakında burada görünecek.</p>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

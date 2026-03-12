@@ -1,0 +1,149 @@
+/* General y Fuentes */
+body { 
+    font-family: 'Inter', sans-serif; 
+    letter-spacing: -0.02rem; 
+    background-color: #f8f9fa; 
+    color: #1f2937;
+}
+
+/* Navbar con efecto Blur */
+.navbar { 
+    background-color: rgba(255, 255, 255, 0.8) !important; 
+    backdrop-filter: blur(10px); 
+}
+
+.nav-link { 
+    color: #4b5563 !important; 
+    font-weight: 500; 
+    transition: 0.2s; 
+}
+
+.nav-link:hover { 
+    color: #6366f1 !important; 
+}
+
+/* Botones estilo SaaS Moderno */
+.btn-primary { 
+    background: #6366f1; 
+    border: none; 
+    font-weight: 500; 
+    padding: 10px 24px;
+    transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #4f46e5;
+    transform: translateY(-1px);
+}
+
+.btn-dark { 
+    background: #1f2937; 
+    border: none; 
+    padding: 10px 24px;
+    transition: 0.3s ease;
+}
+
+/* Tarjetas (Cards) */
+.card { 
+    border: none !important; /* Aseguramos que no haya bordes de bootstrap */
+    border-radius: 16px; 
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); 
+    transition: 0.3s;
+}
+
+.card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+}
+
+/* Efecto Gradiente de You.com */
+.text-gradient {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* Elementos de Soporte (Badges e Iconos) */
+.bg-soft-primary {
+    background-color: #e0e7ff !important;
+    color: #6366f1 !important;
+}
+
+.rounded-circle-icon { /* Nombre más específico para evitar choques */
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* Ajustes para la tabla de inventario */
+.table thead th {
+    background-color: #f8fafc;
+    border-top: none;
+    border-bottom: 1px solid #f1f5f9;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+.btn-white {
+    background-color: #fff;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    transition: 0.2s;
+}
+
+.btn-white:hover {
+    background-color: #f8fafc;
+    color: #1f2937;
+}
+
+/* Badge de opacidad para Dashboard e Inventario */
+.bg-opacity-10 {
+    --bs-bg-opacity: 0.15 !important;
+}
+
+/* Inputs Modernos para Login/Signup */
+.form-control {
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    border: 1px solid #e2e8f0;
+    transition: 0.2s;
+}
+
+.form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* templates/style/main.css */
+
+.search-bar .input-group-text {
+    border: 1px solid #e2e8f0;
+    transition: 0.2s;
+}
+
+.search-bar .form-control {
+    border: 1px solid #e2e8f0;
+    font-size: 0.95rem;
+}
+
+.search-bar .form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+}
+
+.search-bar:focus-within .input-group-text {
+    border-color: #6366f1;
+}

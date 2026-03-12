@@ -1,12 +1,15 @@
 from django.contrib import admin
 from django.urls import path, include
+from .views import dashboard, home, quick_sale, SignUpView
 from django.contrib.auth import views as auth_views
-from .views import dashboard
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', dashboard, name='dashboard'),
+    path('', home, name='home'),
+    path('dashboard/', dashboard, name='dashboard'),
+    path('accounts/signup/', SignUpView.as_view(), name='signup'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('inventory/', include('products.urls')), 
+    path('inventory/', include('products.urls')),
+    path('quick-sale/', quick_sale, name='quick_sale'),
 ]
