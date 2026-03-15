@@ -20,7 +20,7 @@
                 <ul class="navbar-nav gap-3">
                     {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}"><i class="bi bi-speedometer2 text-primary"></i> Panel</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'inventory' %}"><i class="bi bi-box-seam text-primary"></i> Envanter</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'product_list' %}"><i class="bi bi-box-seam text-primary"></i> Envanter</a></li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#saleModal">
                                 <i class="bi bi-cart text-primary"></i> Satış Yap

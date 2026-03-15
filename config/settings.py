@@ -15,7 +15,8 @@ SECRET_KEY = 'django-insecure-2#(^+r&w3oiz6s(kmw19-e&xq0ho=a_%p72m&%*hf(kj-xrog=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://commanding-keila-noncontemptibly.ngrok-free.dev']
 
 
 # Application definition
@@ -27,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'products',
+    'products.apps.ProductsConfig',
     'sales',
     'accounts',
 
