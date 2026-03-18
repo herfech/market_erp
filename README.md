@@ -11,16 +11,20 @@ Este sistema permite gestionar productos, categorías y realizar ventas rápidas
    .\venv\Scripts\activate
 
 3. Instalar dependencias:
+```bash
   pip install -r requirements.txt
 
-4. Preparar base de datos:
+5. Preparar base de datos:
+```bash
   python manage.py makemigrations
   python manage.py migrate
 
-5. Crear usuario administrador:
+7. Crear usuario administrador:
+```bash
   python manage.py createsuperuser
   python manage.py runserver
 
 🚀 Ejecución
 Para iniciar el servidor, usa:
+```bash
   python manage.py runserver
