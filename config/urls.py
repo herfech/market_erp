@@ -2,8 +2,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import dashboard, home, quick_sale, SignUpView
 from django.contrib.auth import views as auth_views
+from sales.views import dashboard, quick_sale
+from .views import home, SignUpView
+
+app_name = 'sales'
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -20,11 +20,9 @@
         <a href="{% url 'export_pdf' %}" class="btn btn-outline-danger rounded-pill px-4 shadow btn-action">
             <i class="bi bi-file-earmark-pdf me-2"></i> PDF İndir
         </a>
-
         <a href="{% url 'export_excel' %}" class="btn btn-outline-success rounded-pill px-4 shadow btn-action">
             <i class="bi bi-file-earmark-excel me-2"></i> Excel İndir
         </a>
-
         <a href="/admin/products/product/add/" class="btn btn-primary rounded-pill px-4 shadow btn-action">
             <i class="bi bi-plus-circle me-2"></i> Yeni Ürün Ekle
         </a>
@@ -69,10 +67,17 @@
                                 </div>
                             </div>
                         </td>
+                        
                         <td class="text-center">
-                            <span class="badge bg-light text-primary border border-primary border-opacity-25 rounded-pill px-3 py-2">
-                                {{ product.category.name }}
-                            </span>
+                            {% if product.category %}
+                                <span class="badge bg-light text-primary border border-primary border-opacity-25 rounded-pill px-3 py-2">
+                                    {{ product.category.name }}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-light text-secondary border border-secondary border-opacity-25 rounded-pill px-3 py-2">
+                                    Genel
+                                </span>
+                            {% endif %}
                         </td>
                         <td class="text-end fw-bold text-dark">
                             {{ product.price|floatformat:2 }} <small class="text-muted">TL</small>
@@ -121,7 +126,6 @@
 </div>
 
 <script>
-    // Buscador Inteligente
     document.getElementById('searchInput').addEventListener('keyup', function() {
         let filter = this.value.toLowerCase();
         let rows = document.querySelectorAll('.product-row');
@@ -137,7 +141,6 @@
             }
         });
 
-        // Mostrar mensaje si no hay resultados en la búsqueda
         let tableBody = document.querySelector('#productTable tbody');
         let noResultMsg = document.getElementById('no-results');
         

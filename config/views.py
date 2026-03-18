@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
-from products.models import Product
+from products.models import Product, Category
 from sales.models import Sale
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -12,16 +12,18 @@ def home(request):
     return render(request, 'layout/home.html')
 
 def dashboard(request):
-    if not request.user.is_authenticated:
-        return redirect('home')
-        
     total_products = Product.objects.count()
-    today_sales = Sale.objects.count()
+    inventory_value = sum(p.price * p.stock for p in Product.objects.all())
+    
+    categories = Category.objects.all()
+    cat_names = [c.name for c in categories]
+    cat_counts = [Product.objects.filter(category=c).count() for c in categories]
     
     context = {
         'total_products': total_products,
-        'today_sales': today_sales,
-        'all_products': Product.objects.all(),
+        'inventory_value': inventory_value,
+        'cat_names': cat_names,
+        'cat_counts': cat_counts,
     }
     return render(request, 'sales/dashboard.html', context)
 

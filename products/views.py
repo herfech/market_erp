@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Product
+from .models import Product, Category
 from .forms import ProductForm
 import openpyxl
 from django.http import HttpResponse

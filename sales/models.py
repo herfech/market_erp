@@ -1,13 +1,42 @@
 from django.db import models
 from products.models import Product
 
+class Category(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Kategori Adı")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Kategori"
+        verbose_name_plural = "Kategoriler"
+
+class Product(models.Model):
+    name = models.CharField(max_length=200, verbose_name="Ürün Adı")
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='products', verbose_name="Kategori")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Fiyat")
+    stock = models.IntegerField(verbose_name="Stok")
+    barcode = models.CharField(max_length=13, null=True, blank=True, verbose_name="Barkod")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Ürün"
+        verbose_name_plural = "Ürünler"
+
 class Sale(models.Model):
     date = models.DateTimeField(auto_now_add=True, verbose_name="Satış Tarihi")
     total_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name="Toplam Tutar")
-    payment_method = models.CharField(max_length=20, choices=[('Nakit', 'Nakit'), ('Kart', 'Kredi Kartı')], verbose_name="Ödeme Yöntemi")
+    payment_method = models.CharField(
+        max_length=20, 
+        choices=[('Nakit', 'Nakit'), ('Kart', 'Kredi Kartı')], 
+        default='Nakit',
+        verbose_name="Ödeme Yöntemi"
+    )
 
     def __str__(self):
-        return f"Satış #{self.id} - {self.date.strftime('%d/%m/%Y %H:%M')}"
+        return f"Satış #{self.pk} - {self.date.strftime('%d/%m/%Y %H:%M') if self.date else ''}"
 
     class Meta:
         verbose_name = "Satış"
