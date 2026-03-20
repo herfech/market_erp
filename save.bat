@@ -4,7 +4,7 @@ echo ===========================================
 echo   MARKET ERP - RESPALDO Y SUBIDA
 echo ===========================================
 
-echo [1/3] XAMPP'ten veritabanı dışa aktarılıyor...
+echo [1/4] XAMPP'ten veritabanı dışa aktarılıyor...
 C:\xampp\mysql\bin\mysqldump.exe -u root market_db > database_backup.sql
 
 if %ERRORLEVEL% NEQ 0 (
@@ -13,21 +13,24 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b
 )
 
-echo [2/3] GitHub için dosyalar hazırlanıyor...
+echo [2/4] GitHub için dosyalar hazırlanıyor...
 git add .
 set commit_msg="Backup integral: %date% %time%"
 git commit -m %commit_msg%
 
-echo [3/3] GitHub'a yükleniyor...
+echo [3/4] Sincronizando con GitHub (Pull)...
+:: Esto limpia el camino antes de subir
+git pull origin main --rebase
+
+echo [4/4] GitHub'a yükleniyor (Push)...
 git push origin main
 
-:: Aquí revisamos si el comando git push falló
+:: Revisamos si el comando final falló
 if %ERRORLEVEL% NEQ 0 (
     echo.
     echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    echo [ERROR] Yükleme başarısız! (REJECTED)
-    echo Lütfen terminale şunu yazın: git pull origin main --rebase
-    echo Sonra tekrar bu scripti çalıştırın.
+    echo [ERROR] Algo salió mal. 
+    echo Si hay conflictos, deberás resolverlos manualmente.
     echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     pause
     exit /b
