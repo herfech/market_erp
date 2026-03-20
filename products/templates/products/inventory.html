@@ -9,21 +9,58 @@
     .table-hover tbody tr:hover { background-color: rgba(0,0,0,0.02); transform: scale(1.002); transition: all 0.2s; }
     .btn-action { transition: transform 0.2s; }
     .btn-action:hover { transform: translateY(-2px); }
+
+
+    @media (max-width: 768px) {
+        .table-responsive thead { display: none; }
+        
+        .product-row {
+            display: block;
+            border: 1px solid #eee;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .product-row td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: right !important;
+            padding: 10px 20px !important;
+            border: none;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .product-row td:nth-of-type(1):before { content: "Ürün:"; fw-bold; color: #6c757d; font-size: 0.8rem; }
+        .product-row td:nth-of-type(3):before { content: "Fiyat:"; fw-bold; color: #6c757d; font-size: 0.8rem; }
+        .product-row td:nth-of-type(4):before { content: "Stok:"; fw-bold; color: #6c757d; font-size: 0.8rem; }
+
+        
+        .product-row td:first-child { background: #f8f9fa; border-radius: 15px 15px 0 0; }
+        .product-row td:last-child { 
+            border: none; 
+            justify-content: center !important; 
+            background: #fff;
+            border-radius: 0 0 15px 15px;
+        }
+    }
 </style>
 
-<div class="row align-items-center mb-4">
-    <div class="col">
+<div class="row align-items-center mb-4 g-3">
+    <div class="col-12 col-md">
         <h2 class="fw-bold text-dark mb-1">📦 Ürün Envanteri</h2>
         <p class="text-muted mb-0">Toplam <strong>{{ products|length }}</strong> ürün listeleniyor.</p>
     </div>
-    <div class="col-auto">
-        <a href="{% url 'export_pdf' %}" class="btn btn-outline-danger rounded-pill px-4 shadow btn-action">
-            <i class="bi bi-file-earmark-pdf me-2"></i> PDF İndir
+    <div class="col-12 col-md-auto d-flex flex-wrap gap-2">
+        <a href="{% url 'export_pdf' %}" class="btn btn-outline-danger rounded-pill px-3 shadow-sm btn-action flex-fill flex-md-none">
+            <i class="bi bi-file-earmark-pdf"></i> <span class="d-none d-sm-inline">PDF İndir</span>
         </a>
-        <a href="{% url 'export_excel' %}" class="btn btn-outline-success rounded-pill px-4 shadow btn-action">
-            <i class="bi bi-file-earmark-excel me-2"></i> Excel İndir
+        <a href="{% url 'export_excel' %}" class="btn btn-outline-success rounded-pill px-3 shadow-sm btn-action flex-fill flex-md-none">
+            <i class="bi bi-file-earmark-excel"></i> <span class="d-none d-sm-inline">Excel İndir</span>
         </a>
-        <a href="/admin/products/product/add/" class="btn btn-primary rounded-pill px-4 shadow btn-action">
+        <a href="/admin/products/product/add/" class="btn btn-primary rounded-pill px-4 shadow btn-action flex-fill flex-md-none">
             <i class="bi bi-plus-circle me-2"></i> Yeni Ürün Ekle
         </a>
     </div>
@@ -47,7 +84,7 @@
                 <thead class="bg-light">
                     <tr>
                         <th class="ps-4 py-3 text-uppercase small fw-bold text-secondary">Ürün Detayı</th>
-                        <th class="py-3 text-uppercase small fw-bold text-secondary text-center">Kategori</th>
+                        <th class="py-3 text-uppercase small fw-bold text-secondary text-center d-none d-md-table-cell">Kategori</th>
                         <th class="py-3 text-uppercase small fw-bold text-secondary text-end">Fiyat (Birim)</th>
                         <th class="py-3 text-uppercase small fw-bold text-secondary text-center">Stok Durumu</th>
                         <th class="pe-4 py-3 text-uppercase small fw-bold text-secondary text-end">Yönetim</th>
@@ -68,7 +105,7 @@
                             </div>
                         </td>
                         
-                        <td class="text-center">
+                        <td class="text-center d-none d-md-table-cell">
                             {% if product.category %}
                                 <span class="badge bg-light text-primary border border-primary border-opacity-25 rounded-pill px-3 py-2">
                                     {{ product.category.name }}

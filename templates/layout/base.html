@@ -9,45 +9,61 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/templates/style/main.css">
 </head>
+
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg sticky-top border-bottom py-3">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-4 text-dark" href="{% url 'home' %}">
-                <span style="color: #6366f1;">●</span> market.erp
-            </a>
+    <nav class="navbar navbar-expand-lg sticky-top border-bottom py-3 bg-white">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4 text-dark" href="{% url 'home' %}">
+            <span style="color: #6366f1;">●</span> market.erp
+        </a>
 
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav gap-3">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}"><i class="bi bi-speedometer2 text-primary"></i> Panel</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'product_list' %}"><i class="bi bi-box-seam text-primary"></i> Envanter</a></li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#saleModal">
-                                <i class="bi bi-cart text-primary"></i> Satış Yap
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item"><a class="nav-link" href="#features">Özellikler</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#pricing">Fiyatlandırma</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about">Hakkımızda</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div class="d-flex align-items-center gap-2">
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav gap-lg-3 text-center py-3 py-lg-0">
                 {% if user.is_authenticated %}
-                    <span class="text-muted small me-2 d-none d-md-inline">{{ user.username }}</span>
-                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-danger rounded-pill px-4 btn-sm">Çıkış Yap</button>
-                    </form>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}"><i class="bi bi-speedometer2 text-primary"></i> Panel</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'product_list' %}"><i class="bi bi-box-seam text-primary"></i> Envanter</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#saleModal">
+                            <i class="bi bi-cart text-primary"></i> Satış Yap
+                        </a>
+                    </li>
+                    <li class="nav-item d-lg-none mt-2 border-top pt-2">
+                        <span class="text-muted small d-block mb-2">{{ user.username }}</span>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger w-100 rounded-pill">Çıkış Yap</button>
+                        </form>
+                    </li>
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-light rounded-pill px-4">Giriş</a>
-                    <a href="{% url 'signup' %}" class="btn btn-dark rounded-pill px-4">Hemen Dene</a>
+                    <li class="nav-item"><a class="nav-link" href="#features">Özellikler</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#pricing">Fiyatlandırma</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">Hakkımızda</a></li>
+                    <li class="nav-item d-lg-none mt-2 border-top pt-2">
+                        <a href="{% url 'login' %}" class="btn btn-light w-100 mb-2">Giriş</a>
+                        <a href="{% url 'signup' %}" class="btn btn-dark w-100">Hemen Dene</a>
+                    </li>
                 {% endif %}
-            </div>
+            </ul>
         </div>
-    </nav>
+
+        <div class="d-none d-lg-flex align-items-center gap-2">
+            {% if user.is_authenticated %}
+                <span class="text-muted small me-2">{{ user.username }}</span>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger rounded-pill px-4 btn-sm">Çıkış Yap</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-light rounded-pill px-4">Giriş</a>
+                <a href="{% url 'signup' %}" class="btn btn-dark rounded-pill px-4">Hemen Dene</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
 
     <main class="container mt-4">
         {% block content %}{% endblock %}
@@ -68,7 +84,7 @@
                             <option value="{{ p.id }}">{{ p.name }} - {{ p.price }} TL (Stok: {{ p.stock }})</option>
                         {% endfor %}
                     </select>
-                    <button onclick="processSale()" class="btn btn-primary w-100 rounded-pill py-2">
+                    <button onclick="processSale()" class="btn btn-primary w-100 rounded-pill py-3">
                         <i class="bi bi-check-circle me-2"></i> Satışı Onayla
                     </button>
                 </div>

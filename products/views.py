@@ -4,12 +4,14 @@ from .models import Product, Category
 from .forms import ProductForm
 import openpyxl
 from django.http import HttpResponse
+from django.contrib import messages
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
 
+@login_required
 def product_list(request):
     products = Product.objects.all()
     return render(request, 'products/inventory.html', {'products': products})
@@ -20,12 +22,14 @@ def product_add(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Ürün başarıyla eklendi!')
             return redirect('product_list')
     else:
         form = ProductForm()
     return render(request, 'products/product_form.html', {'form': form})
 
 
+@login_required
 def export_products_excel(request):
     wb = openpyxl.Workbook()
     ws = wb.active
@@ -51,6 +55,7 @@ def export_products_excel(request):
     return response
 
 
+@login_required
 def export_products_pdf(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Envanter_Raporu.pdf"'

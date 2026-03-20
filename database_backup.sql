@@ -348,7 +348,7 @@ CREATE TABLE `products_product` (
 
 LOCK TABLES `products_product` WRITE;
 /*!40000 ALTER TABLE `products_product` DISABLE KEYS */;
-INSERT INTO `products_product` VALUES (2,'Mercimek 1kg',5,38.25,0),(3,'Zeytinyağı 1L',1,250.00,28),(4,'Beyaz Peynir 500g',2,125.50,6),(5,'Domates Salçası',4,65.00,1);
+INSERT INTO `products_product` VALUES (2,'Mercimek 1kg',5,38.25,0),(3,'Zeytinyağı 1L',1,250.00,27),(4,'Beyaz Peynir 500g',2,125.50,6),(5,'Domates Salçası',4,65.00,1);
 /*!40000 ALTER TABLE `products_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -418,7 +418,7 @@ CREATE TABLE `sales_sale` (
   `total_amount` decimal(12,2) NOT NULL,
   `payment_method` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -427,7 +427,7 @@ CREATE TABLE `sales_sale` (
 
 LOCK TABLES `sales_sale` WRITE;
 /*!40000 ALTER TABLE `sales_sale` DISABLE KEYS */;
-INSERT INTO `sales_sale` VALUES (1,'2026-03-18 12:09:17.838209',250.00,'Nakit'),(2,'2026-03-18 12:09:26.645947',125.50,'Nakit');
+INSERT INTO `sales_sale` VALUES (1,'2026-03-18 12:09:17.838209',250.00,'Nakit'),(2,'2026-03-18 12:09:26.645947',125.50,'Nakit'),(3,'2026-03-20 21:41:42.891868',250.00,'Nakit');
 /*!40000 ALTER TABLE `sales_sale` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -471,4 +471,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-20 21:08:05
+-- Dump completed on 2026-03-21  0:47:59
