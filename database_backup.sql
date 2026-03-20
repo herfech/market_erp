@@ -27,7 +27,7 @@ CREATE TABLE `auth_group` (
   `name` varchar(150) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,6 +36,7 @@ CREATE TABLE `auth_group` (
 
 LOCK TABLES `auth_group` WRITE;
 /*!40000 ALTER TABLE `auth_group` DISABLE KEYS */;
+INSERT INTO `auth_group` VALUES (1,'Inventory_Management');
 /*!40000 ALTER TABLE `auth_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -55,7 +56,7 @@ CREATE TABLE `auth_group_permissions` (
   KEY `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` (`permission_id`),
   CONSTRAINT `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
   CONSTRAINT `auth_group_permissions_group_id_b120cbf9_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,6 +65,7 @@ CREATE TABLE `auth_group_permissions` (
 
 LOCK TABLES `auth_group_permissions` WRITE;
 /*!40000 ALTER TABLE `auth_group_permissions` DISABLE KEYS */;
+INSERT INTO `auth_group_permissions` VALUES (1,1,25),(2,1,26),(3,1,28);
 /*!40000 ALTER TABLE `auth_group_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +84,7 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
   CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +93,7 @@ CREATE TABLE `auth_permission` (
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can view log entry',1,'view_logentry'),(5,'Can add permission',2,'add_permission'),(6,'Can change permission',2,'change_permission'),(7,'Can delete permission',2,'delete_permission'),(8,'Can view permission',2,'view_permission'),(9,'Can add group',3,'add_group'),(10,'Can change group',3,'change_group'),(11,'Can delete group',3,'delete_group'),(12,'Can view group',3,'view_group'),(13,'Can add user',4,'add_user'),(14,'Can change user',4,'change_user'),(15,'Can delete user',4,'delete_user'),(16,'Can view user',4,'view_user'),(17,'Can add content type',5,'add_contenttype'),(18,'Can change content type',5,'change_contenttype'),(19,'Can delete content type',5,'delete_contenttype'),(20,'Can view content type',5,'view_contenttype'),(21,'Can add session',6,'add_session'),(22,'Can change session',6,'change_session'),(23,'Can delete session',6,'delete_session'),(24,'Can view session',6,'view_session'),(25,'Can add category',7,'add_category'),(26,'Can change category',7,'change_category'),(27,'Can delete category',7,'delete_category'),(28,'Can view category',7,'view_category'),(29,'Can add product',8,'add_product'),(30,'Can change product',8,'change_product'),(31,'Can delete product',8,'delete_product'),(32,'Can view product',8,'view_product'),(33,'Can add Satış',9,'add_sale'),(34,'Can change Satış',9,'change_sale'),(35,'Can delete Satış',9,'delete_sale'),(36,'Can view Satış',9,'view_sale'),(37,'Can add sale detail',10,'add_saledetail'),(38,'Can change sale detail',10,'change_saledetail'),(39,'Can delete sale detail',10,'delete_saledetail'),(40,'Can view sale detail',10,'view_saledetail');
+INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can view log entry',1,'view_logentry'),(5,'Can add permission',2,'add_permission'),(6,'Can change permission',2,'change_permission'),(7,'Can delete permission',2,'delete_permission'),(8,'Can view permission',2,'view_permission'),(9,'Can add group',3,'add_group'),(10,'Can change group',3,'change_group'),(11,'Can delete group',3,'delete_group'),(12,'Can view group',3,'view_group'),(13,'Can add user',4,'add_user'),(14,'Can change user',4,'change_user'),(15,'Can delete user',4,'delete_user'),(16,'Can view user',4,'view_user'),(17,'Can add content type',5,'add_contenttype'),(18,'Can change content type',5,'change_contenttype'),(19,'Can delete content type',5,'delete_contenttype'),(20,'Can view content type',5,'view_contenttype'),(21,'Can add session',6,'add_session'),(22,'Can change session',6,'change_session'),(23,'Can delete session',6,'delete_session'),(24,'Can view session',6,'view_session'),(25,'Can add category',7,'add_category'),(26,'Can change category',7,'change_category'),(27,'Can delete category',7,'delete_category'),(28,'Can view category',7,'view_category'),(29,'Can add product',8,'add_product'),(30,'Can change product',8,'change_product'),(31,'Can delete product',8,'delete_product'),(32,'Can view product',8,'view_product'),(33,'Can add Satış',9,'add_sale'),(34,'Can change Satış',9,'change_sale'),(35,'Can delete Satış',9,'delete_sale'),(36,'Can view Satış',9,'view_sale'),(37,'Can add sale detail',10,'add_saledetail'),(38,'Can change sale detail',10,'change_saledetail'),(39,'Can delete sale detail',10,'delete_saledetail'),(40,'Can view sale detail',10,'view_saledetail'),(41,'Can add category',11,'add_category'),(42,'Can change category',11,'change_category'),(43,'Can delete category',11,'delete_category'),(44,'Can view category',11,'view_category'),(45,'Can add product',12,'add_product'),(46,'Can change product',12,'change_product'),(47,'Can delete product',12,'delete_product'),(48,'Can view product',12,'view_product');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,7 +118,7 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +127,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$600000$oDRTttt3Uq9INmaJQmVI9y$GTwvmaZ2dh3awRCeQafVyaw87oJGZglupdtGfrxK+xs=','2026-03-12 13:47:28.225764',1,'admin','','','market.erp@gmail.com',1,1,'2026-03-12 10:02:02.222103'),(2,'pbkdf2_sha256$600000$UNmn6G3rkQwJa7mIIRYy9t$dkoiElErByOdH0KaOg/jNw9swN39YGUzZ8zXsxpIgQ8=','2026-03-12 15:25:20.197741',0,'Heri','','','',0,1,'2026-03-12 14:12:00.395307');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$600000$oDRTttt3Uq9INmaJQmVI9y$GTwvmaZ2dh3awRCeQafVyaw87oJGZglupdtGfrxK+xs=','2026-03-18 14:03:57.753721',1,'admin','','','market.erp@gmail.com',1,1,'2026-03-12 10:02:02.222103'),(2,'pbkdf2_sha256$600000$UNmn6G3rkQwJa7mIIRYy9t$dkoiElErByOdH0KaOg/jNw9swN39YGUzZ8zXsxpIgQ8=','2026-03-18 11:57:02.325191',0,'Heri','','','',0,1,'2026-03-12 14:12:00.395307'),(3,'pbkdf2_sha256$600000$cXdTAfjhjjVpfTOCWGQnF2$UrWMYiHEd3oNjWqOO853MPDpcov3frPoJ9AT3ifPrj8=','2026-03-20 15:50:10.296264',0,'marketerp','','','',0,1,'2026-03-20 15:45:36.037941');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,7 +208,7 @@ CREATE TABLE `django_admin_log` (
   KEY `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id`),
   CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,6 +217,7 @@ CREATE TABLE `django_admin_log` (
 
 LOCK TABLES `django_admin_log` WRITE;
 /*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
+INSERT INTO `django_admin_log` VALUES (1,'2026-03-15 17:13:14.424545','1','Inventory_Management',1,'[{\"added\": {}}]',3,1),(2,'2026-03-15 19:31:17.132692','1','Prueba',1,'[{\"added\": {}}]',8,1),(3,'2026-03-15 19:35:41.842980','2','Prueba 2',1,'[{\"added\": {}}]',8,1),(4,'2026-03-15 19:56:23.368586','1','Prueba',3,'',8,1),(5,'2026-03-15 19:56:36.383217','2','Prueba 2',3,'',8,1),(6,'2026-03-15 21:22:58.394077','3','Zeytinyağı 1L',1,'[{\"added\": {}}]',8,1),(7,'2026-03-15 21:23:43.901910','4','Beyaz Peynir 500g',1,'[{\"added\": {}}]',8,1),(8,'2026-03-15 21:24:34.021254','5','Türk Kahvesi 100g',1,'[{\"added\": {}}]',8,1),(9,'2026-03-15 21:25:30.385164','6','Domates Salçası',1,'[{\"added\": {}}]',8,1),(10,'2026-03-15 21:26:10.437334','7','Mercimek 1kg',1,'[{\"added\": {}}]',8,1),(11,'2026-03-15 21:27:31.323878','8','Siyah Çay 500g',1,'[{\"added\": {}}]',8,1),(12,'2026-03-15 23:02:36.423922','1','Category object (1)',1,'[{\"added\": {}}]',7,1),(13,'2026-03-15 23:02:44.671189','2','Category object (2)',1,'[{\"added\": {}}]',7,1),(14,'2026-03-15 23:02:52.967118','3','Category object (3)',1,'[{\"added\": {}}]',7,1),(15,'2026-03-15 23:03:01.540992','4','Category object (4)',1,'[{\"added\": {}}]',7,1),(16,'2026-03-15 23:03:13.279165','5','Category object (5)',1,'[{\"added\": {}}]',7,1),(17,'2026-03-15 23:09:35.318575','6','Domates Salçası',3,'',8,1),(18,'2026-03-15 23:34:28.040207','1','Category object (1)',1,'[{\"added\": {}}]',7,1),(19,'2026-03-15 23:35:39.240981','1','56',1,'[{\"added\": {}}]',8,1),(20,'2026-03-15 23:35:54.176656','1','56',3,'',8,1),(21,'2026-03-17 14:46:33.829014','1','Kahvaltılık',1,'[{\"added\": {}}]',11,1),(22,'2026-03-17 14:46:43.611817','2','İçecek',1,'[{\"added\": {}}]',11,1),(23,'2026-03-17 14:46:51.392272','3','Konserve',1,'[{\"added\": {}}]',11,1),(24,'2026-03-17 14:47:00.683857','4','Bakliyat',1,'[{\"added\": {}}]',11,1),(25,'2026-03-17 14:56:26.336034','2','Kahvaltılık',1,'[{\"added\": {}}]',7,1),(26,'2026-03-17 14:56:32.912496','3','İçecek',1,'[{\"added\": {}}]',7,1),(27,'2026-03-17 14:56:40.306996','4','Konserve',1,'[{\"added\": {}}]',7,1),(28,'2026-03-17 14:56:46.486415','5','Bakliyat',1,'[{\"added\": {}}]',7,1),(29,'2026-03-17 14:57:21.327222','2','Mercimek 1kg',1,'[{\"added\": {}}]',8,1),(30,'2026-03-17 14:57:49.019131','3','Zeytinyağı 1L',1,'[{\"added\": {}}]',8,1),(31,'2026-03-17 14:58:15.194592','4','Beyaz Peynir 500g',1,'[{\"added\": {}}]',8,1),(32,'2026-03-17 14:58:38.022141','5','Domates Salçası',1,'[{\"added\": {}}]',8,1);
 /*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,7 +234,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +243,7 @@ CREATE TABLE `django_content_type` (
 
 LOCK TABLES `django_content_type` WRITE;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
-INSERT INTO `django_content_type` VALUES (1,'admin','logentry'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(5,'contenttypes','contenttype'),(7,'products','category'),(8,'products','product'),(9,'sales','sale'),(10,'sales','saledetail'),(6,'sessions','session');
+INSERT INTO `django_content_type` VALUES (1,'admin','logentry'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(5,'contenttypes','contenttype'),(7,'products','category'),(8,'products','product'),(11,'sales','category'),(12,'sales','product'),(9,'sales','sale'),(10,'sales','saledetail'),(6,'sessions','session');
 /*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,7 +260,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -266,7 +269,7 @@ CREATE TABLE `django_migrations` (
 
 LOCK TABLES `django_migrations` WRITE;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
-INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2026-03-12 09:59:46.103124'),(2,'auth','0001_initial','2026-03-12 09:59:46.590817'),(3,'admin','0001_initial','2026-03-12 09:59:46.702919'),(4,'admin','0002_logentry_remove_auto_add','2026-03-12 09:59:46.709643'),(5,'admin','0003_logentry_add_action_flag_choices','2026-03-12 09:59:46.718086'),(6,'contenttypes','0002_remove_content_type_name','2026-03-12 09:59:46.776059'),(7,'auth','0002_alter_permission_name_max_length','2026-03-12 09:59:46.830249'),(8,'auth','0003_alter_user_email_max_length','2026-03-12 09:59:46.843658'),(9,'auth','0004_alter_user_username_opts','2026-03-12 09:59:46.850881'),(10,'auth','0005_alter_user_last_login_null','2026-03-12 09:59:46.900611'),(11,'auth','0006_require_contenttypes_0002','2026-03-12 09:59:46.904413'),(12,'auth','0007_alter_validators_add_error_messages','2026-03-12 09:59:46.910559'),(13,'auth','0008_alter_user_username_max_length','2026-03-12 09:59:46.925319'),(14,'auth','0009_alter_user_last_name_max_length','2026-03-12 09:59:46.939414'),(15,'auth','0010_alter_group_name_max_length','2026-03-12 09:59:46.954501'),(16,'auth','0011_update_proxy_permissions','2026-03-12 09:59:46.961562'),(17,'auth','0012_alter_user_first_name_max_length','2026-03-12 09:59:46.974898'),(18,'products','0001_initial','2026-03-12 09:59:47.017386'),(19,'sales','0001_initial','2026-03-12 09:59:47.157038'),(20,'sessions','0001_initial','2026-03-12 09:59:47.183052'),(21,'products','0002_alter_category_id_alter_product_id','2026-03-12 11:54:01.244062'),(22,'sales','0002_alter_sale_id_alter_saledetail_id','2026-03-12 11:54:01.591566');
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2026-03-12 09:59:46.103124'),(2,'auth','0001_initial','2026-03-12 09:59:46.590817'),(3,'admin','0001_initial','2026-03-12 09:59:46.702919'),(4,'admin','0002_logentry_remove_auto_add','2026-03-12 09:59:46.709643'),(5,'admin','0003_logentry_add_action_flag_choices','2026-03-12 09:59:46.718086'),(6,'contenttypes','0002_remove_content_type_name','2026-03-12 09:59:46.776059'),(7,'auth','0002_alter_permission_name_max_length','2026-03-12 09:59:46.830249'),(8,'auth','0003_alter_user_email_max_length','2026-03-12 09:59:46.843658'),(9,'auth','0004_alter_user_username_opts','2026-03-12 09:59:46.850881'),(10,'auth','0005_alter_user_last_login_null','2026-03-12 09:59:46.900611'),(11,'auth','0006_require_contenttypes_0002','2026-03-12 09:59:46.904413'),(12,'auth','0007_alter_validators_add_error_messages','2026-03-12 09:59:46.910559'),(13,'auth','0008_alter_user_username_max_length','2026-03-12 09:59:46.925319'),(14,'auth','0009_alter_user_last_name_max_length','2026-03-12 09:59:46.939414'),(15,'auth','0010_alter_group_name_max_length','2026-03-12 09:59:46.954501'),(16,'auth','0011_update_proxy_permissions','2026-03-12 09:59:46.961562'),(17,'auth','0012_alter_user_first_name_max_length','2026-03-12 09:59:46.974898'),(20,'sessions','0001_initial','2026-03-12 09:59:47.183052'),(28,'products','0001_initial','2026-03-15 23:30:02.341504'),(29,'sales','0001_initial','2026-03-15 23:32:50.425369'),(30,'products','0002_remove_product_barcode_alter_product_category_and_more','2026-03-17 14:27:39.840387'),(31,'sales','0002_alter_saledetail_product','2026-03-17 14:27:40.259266'),(32,'sales','0003_alter_sale_payment_method_alter_saledetail_product','2026-03-18 12:08:35.904736');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,6 +295,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
+INSERT INTO `django_session` VALUES ('39sj9ihmfm2m5fn2sydmg05bp091um8e','.eJxVjDsOwjAQBe_iGln-xN6Ykj5nsNbrDQ4gR4qTCnF3EikFtG9m3ltE3NYSt8ZLnLK4CiMuv1tCenI9QH5gvc-S5rouU5KHIk_a5DBnft1O9--gYCt7TcDogrZKhQwdsLbQWTJggs7MinvvAUertNP9bpgxpwDglXWQiMmJzxfBmzcl:1w2WjT:eVqho9iWY2ATMwr-teaAdwv-6uGGX8eq0o_7Eroq_4Y','2026-03-31 15:53:23.229428'),('8deulloe872l8g9ev88qgp2ce9wqvhui','.eJxVjDsOwyAQBe9CHSGzLBhSpvcZEMsnOIlAMnYV5e4RkoukfTPz3sz5Yy_u6Glza2RXJtjldyMfnqkOEB--3hsPre7bSnwo_KSdLy2m1-10_w6K72XUASEaAx4NYA5J-SizRLJCRWsmMpRBkxJzmoWWE6IWMliQigggWM0-X-DSN0I:1w1qac:MgwadpWpmonFEP8bv3W0sHXmlBEthwqoyR7PmIfu6w4','2026-03-29 18:53:26.195220'),('9dfw9oiw0tcit5lyn89j50lt33yi0ndq','.eJxVjDsOwyAQBe9CHSGzLBhSpvcZEMsnOIlAMnYV5e4RkoukfTPz3sz5Yy_u6Glza2RXJtjldyMfnqkOEB--3hsPre7bSnwo_KSdLy2m1-10_w6K72XUASEaAx4NYA5J-SizRLJCRWsmMpRBkxJzmoWWE6IWMliQigggWM0-X-DSN0I:1w2rV7:_qiqrNxoaNI7dvnGcgBo1soD1q3leDSuYmDEVOu0k8Y','2026-04-01 14:03:57.760027'),('gnkwmzuqw0y78w0m23p9g1gfszngz0bp','.eJxVjDsOwjAQBe_iGln-xN6Ykj5nsNbrDQ4gR4qTCnF3EikFtG9m3ltE3NYSt8ZLnLK4CiMuv1tCenI9QH5gvc-S5rouU5KHIk_a5DBnft1O9--gYCt7TcDogrZKhQwdsLbQWTJggs7MinvvAUertNP9bpgxpwDglXWQiMmJzxfBmzcl:1w2m7w:K4IgHmL7l_ik0W51OS065Q0DxWOk18QDT9Tn3ptnqJo','2026-04-01 08:19:40.215596');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,10 +307,10 @@ DROP TABLE IF EXISTS `products_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `products_category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,6 +319,7 @@ CREATE TABLE `products_category` (
 
 LOCK TABLES `products_category` WRITE;
 /*!40000 ALTER TABLE `products_category` DISABLE KEYS */;
+INSERT INTO `products_category` VALUES (1,'Gıda'),(2,'Kahvaltılık'),(3,'İçecek'),(4,'Konserve'),(5,'Bakliyat');
 /*!40000 ALTER TABLE `products_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,12 +331,15 @@ DROP TABLE IF EXISTS `products_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `products_product` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `barcode` varchar(50) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `category_id` bigint(20) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `stock` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `barcode` (`barcode`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `products_product_category_id_9b594869` (`category_id`),
+  CONSTRAINT `products_product_category_id_9b594869_fk_products_category_id` FOREIGN KEY (`category_id`) REFERENCES `products_category` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -340,7 +348,61 @@ CREATE TABLE `products_product` (
 
 LOCK TABLES `products_product` WRITE;
 /*!40000 ALTER TABLE `products_product` DISABLE KEYS */;
+INSERT INTO `products_product` VALUES (2,'Mercimek 1kg',5,38.25,0),(3,'Zeytinyağı 1L',1,250.00,28),(4,'Beyaz Peynir 500g',2,125.50,6),(5,'Domates Salçası',4,65.00,1);
 /*!40000 ALTER TABLE `products_product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sales_category`
+--
+
+DROP TABLE IF EXISTS `sales_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sales_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sales_category`
+--
+
+LOCK TABLES `sales_category` WRITE;
+/*!40000 ALTER TABLE `sales_category` DISABLE KEYS */;
+INSERT INTO `sales_category` VALUES (1,'Kahvaltılık'),(2,'İçecek'),(3,'Konserve'),(4,'Bakliyat');
+/*!40000 ALTER TABLE `sales_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sales_product`
+--
+
+DROP TABLE IF EXISTS `sales_product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sales_product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `stock` int(11) NOT NULL,
+  `barcode` varchar(13) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sales_product_category_id_f04ee977_fk_sales_category_id` (`category_id`),
+  CONSTRAINT `sales_product_category_id_f04ee977_fk_sales_category_id` FOREIGN KEY (`category_id`) REFERENCES `sales_category` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sales_product`
+--
+
+LOCK TABLES `sales_product` WRITE;
+/*!40000 ALTER TABLE `sales_product` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sales_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -356,7 +418,7 @@ CREATE TABLE `sales_sale` (
   `total_amount` decimal(12,2) NOT NULL,
   `payment_method` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -365,6 +427,7 @@ CREATE TABLE `sales_sale` (
 
 LOCK TABLES `sales_sale` WRITE;
 /*!40000 ALTER TABLE `sales_sale` DISABLE KEYS */;
+INSERT INTO `sales_sale` VALUES (1,'2026-03-18 12:09:17.838209',250.00,'Nakit'),(2,'2026-03-18 12:09:26.645947',125.50,'Nakit');
 /*!40000 ALTER TABLE `sales_sale` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -383,10 +446,10 @@ CREATE TABLE `sales_saledetail` (
   `product_id` int(11) NOT NULL,
   `sale_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `sales_saledetail_product_id_c296b029_fk` (`product_id`),
-  KEY `sales_saledetail_sale_id_953256a3_fk` (`sale_id`),
-  CONSTRAINT `sales_saledetail_product_id_c296b029_fk` FOREIGN KEY (`product_id`) REFERENCES `products_product` (`id`),
-  CONSTRAINT `sales_saledetail_sale_id_953256a3_fk` FOREIGN KEY (`sale_id`) REFERENCES `sales_sale` (`id`)
+  KEY `sales_saledetail_sale_id_953256a3_fk_sales_sale_id` (`sale_id`),
+  KEY `sales_saledetail_product_id_c296b029_fk_sales_product_id` (`product_id`),
+  CONSTRAINT `sales_saledetail_product_id_c296b029_fk_sales_product_id` FOREIGN KEY (`product_id`) REFERENCES `sales_product` (`id`),
+  CONSTRAINT `sales_saledetail_sale_id_953256a3_fk_sales_sale_id` FOREIGN KEY (`sale_id`) REFERENCES `sales_sale` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -408,4 +471,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-12 20:25:06
+-- Dump completed on 2026-03-20 21:02:16
