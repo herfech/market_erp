@@ -32,8 +32,9 @@ class Sale(models.Model):
         max_length=20, 
         choices=[('Nakit', 'Nakit'), ('Kart', 'Kredi Kartı')], 
         default='Nakit',
-        verbose_name="Ödeme Yöntemi"
+        verbose_name="Ödeme Yöntemi",
     )
+    is_cancelled = models.BooleanField(default=False, verbose_name="İptal Edildi")
 
     def __str__(self):
         return f"Satış #{self.pk} - {self.date.strftime('%d/%m/%Y %H:%M') if self.date else ''}"

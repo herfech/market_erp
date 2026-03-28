@@ -5,6 +5,7 @@ from .forms import ProductForm
 import openpyxl
 from django.http import HttpResponse
 from django.contrib import messages
+from django.utils import timezone
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
@@ -13,8 +14,12 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
 @login_required
 def product_list(request):
+    today = timezone.now().date()
     products = Product.objects.all()
-    return render(request, 'products/inventory.html', {'products': products})
+    return render(request, 'products/inventory.html', {
+        'products': products,
+        'today': today
+        })
 
 @login_required 
 def product_add(request):
@@ -34,16 +39,18 @@ def export_products_excel(request):
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Envanter Raporu"
-    headers = ['Ürün Adı', 'Kategori', 'Fiyat (TL)', 'Stok Miktarı']
+    headers = ['Ürün Adı', 'Kategori', 'Fiyat (TL)', 'Stok', 'SKT']
     ws.append(headers)
 
     products = Product.objects.all()
     for product in products:
+        skt = product.expiration_date.strftime('%d.%m.%Y') if product.expiration_date else "-"
         ws.append([
             product.name, 
-            product.category.name, 
+            product.category.name if product.category else "Genel",
             product.price, 
-            product.stock
+            product.stock,
+            skt
         ])
 
     response = HttpResponse(
@@ -63,22 +70,24 @@ def export_products_pdf(request):
     doc = SimpleDocTemplate(response, pagesize=A4)
     elements = []
 
-    data = [['Urun Adi', 'Kategori', 'Fiyat (TL)', 'Stok']]
+    data = [['Urun Adi', 'Kategori', 'Fiyat (TL)', 'Stok', 'SKT']]
     products = Product.objects.all()
     
     for p in products:
-        data.append([p.name, p.category.name, str(p.price), str(p.stock)])
+        skt = p.expiration_date.strftime('%d.%m.%Y') if p.expiration_date else "-"
+        data.append([p.name, p.category.name if p.category else "Genel", str(p.price), str(p.stock), skt])
 
     style = TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
         ('GRID', (0, 0), (-1, -1), 1, colors.grey)
     ])
 
-    table = Table(data)
+    table = Table(data, colWidths=[150, 100, 80, 60, 90])
     table.setStyle(style)
     elements.append(table)
     

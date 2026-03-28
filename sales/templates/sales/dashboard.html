@@ -73,17 +73,79 @@
         </div>
     </div>
 
-    <div class="col-xl col-md-6">
-        <div class="card h-100 shadow-sm border-0 bg-dark text-white">
-            <div class="card-body p-3 d-flex flex-column justify-content-center">
-                <div class="d-grid gap-2">
-                    <a href="/admin/products/product/add/" class="btn btn-primary rounded-pill btn-sm fw-bold py-1">Yeni Ürün Ekle</a>
-                    <a href="{% url 'product_list' %}" class="btn btn-outline-light rounded-pill btn-sm py-1" style="font-size: 0.8rem;">Envantere Git</a>
+    <div class="row g-3 mb-4 mt-1">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-danger bg-opacity-10 h-100">
+            <div class="card-body d-flex align-items-center p-3">
+                <i class="bi bi-x-octagon-fill text-danger fs-3 me-3"></i>
+                <div>
+                    <h6 class="mb-0 text-danger fw-bold x-small text-uppercase">Tarihi Geçmiş</h6>
+                    <h4 class="mb-0 fw-bold text-danger">{{ expired_count }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-warning bg-opacity-10 h-100">
+            <div class="card-body d-flex align-items-center p-3">
+                <i class="bi bi-exclamation-triangle-fill text-warning fs-3 me-3"></i>
+                <div>
+                    <h6 class="mb-0 text-warning fw-bold x-small text-uppercase">7 Gün İçinde Bitecek</h6>
+                    <h4 class="mb-0 fw-bold text-warning">{{ expiring_soon }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-info bg-opacity-10 h-100">
+            <div class="card-body d-flex align-items-center p-3">
+                <i class="bi bi-calendar-event-fill text-info fs-3 me-3"></i>
+                <div>
+                    <h6 class="mb-0 text-info fw-bold x-small text-uppercase">30 Gün İçinde Bitecek</h6>
+                    <h4 class="mb-0 fw-bold text-info">{{ expiring_month }}</h4>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="row mb-4 mt-2 g-3">
+
+    <div class="col-md-8 col-lg-9">
+        <div class="card h-100 border-0 shadow-sm rounded-4 bg-primary text-white">
+            <div class="card-body d-flex justify-content-between align-items-center p-4">
+                <div>
+                    <h5 class="fw-bold mb-1 text-white">Günlük Operasyonlar</h5>
+                    <p class="mb-0 opacity-75 text-white small">Satışları yönetin y kasayı kontrol edin.</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'sale_history' %}" class="btn btn-light rounded-pill px-4 fw-bold shadow-sm">
+                        <i class="bi bi-receipt-cutoff me-2"></i> Satış Geçmişi & Kasa
+                    </a>
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm rounded-4 bg-dark text-white">
+            <div class="card-body p-3 d-flex flex-column justify-content-center">
+                <div class="d-grid gap-2">
+                    <a href="/admin/products/product/add/" class="btn btn-primary rounded-pill btn-sm fw-bold py-1">
+                        <i class="bi bi-plus-lg me-1"></i> Yeni Ürün Ekle
+                    </a>
+                    <a href="{% url 'product_list' %}" class="btn btn-outline-light rounded-pill btn-sm py-1" style="font-size: 0.8rem;">
+                        <i class="bi bi-boxes me-1"></i> Envantere Git
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
 
 <div class="row mt-4 g-4">
     <div class="col-lg-8">
@@ -150,6 +212,11 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <style>
+.badge-warning-light { background-color: rgba(255, 193, 7, 0.2); color: #856404; }
+/* Si quieres que el icono de "Tarihi Geçmiş" parpadee como el de Kritik Stok */
+.blink-danger { animation: blinker 1.5s linear infinite; color: #dc3545; }
+@keyframes blinker { 50% { opacity: 0.5; } }
+
     .x-small { font-size: 0.65rem; }
     .pulse-animation { animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }

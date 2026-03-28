@@ -10,7 +10,6 @@
     .btn-action { transition: transform 0.2s; }
     .btn-action:hover { transform: translateY(-2px); }
 
-
     @media (max-width: 768px) {
         .table-responsive thead { display: none; }
         
@@ -33,10 +32,11 @@
             border-bottom: 1px solid #f8f9fa;
         }
 
-        .product-row td:nth-of-type(1):before { content: "Ürün:"; fw-bold; color: #6c757d; font-size: 0.8rem; }
-        .product-row td:nth-of-type(3):before { content: "Fiyat:"; fw-bold; color: #6c757d; font-size: 0.8rem; }
-        .product-row td:nth-of-type(4):before { content: "Stok:"; fw-bold; color: #6c757d; font-size: 0.8rem; }
-
+        .product-row td:nth-of-type(1):before { content: "Ürün:"; font-weight: bold; color: #6c757d; font-size: 0.8rem; }
+        .product-row td:nth-of-type(3):before { content: "Fiyat:"; font-weight: bold; color: #6c757d; font-size: 0.8rem; }
+        .product-row td:nth-of-type(4):before { content: "Stok:"; font-weight: bold; color: #6c757d; font-size: 0.8rem; }
+        /* CAMBIO 1: Agregamos label de fecha para móvil */
+        .product-row td:nth-of-type(5):before { content: "SKT:"; font-weight: bold; color: #6c757d; font-size: 0.8rem; }
         
         .product-row td:first-child { background: #f8f9fa; border-radius: 15px 15px 0 0; }
         .product-row td:last-child { 
@@ -87,12 +87,13 @@
                         <th class="py-3 text-uppercase small fw-bold text-secondary text-center d-none d-md-table-cell">Kategori</th>
                         <th class="py-3 text-uppercase small fw-bold text-secondary text-end">Fiyat (Birim)</th>
                         <th class="py-3 text-uppercase small fw-bold text-secondary text-center">Stok Durumu</th>
+                        <th class="py-3 text-uppercase small fw-bold text-secondary text-center">SKT</th>
                         <th class="pe-4 py-3 text-uppercase small fw-bold text-secondary text-end">Yönetim</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for product in products %}
-                    <tr class="product-row">
+                    <tr class="product-row {% if product.expiration_date and product.expiration_date < today %}table-danger{% elif product.expiration_date and product.days_until_expiration <= 7 %}table-warning{% endif %}">
                         <td class="ps-4 py-3">
                             <div class="d-flex align-items-center">
                                 <div class="rounded-3 bg-soft-primary p-2 me-3 d-none d-sm-flex" style="width: 45px; height: 45px; align-items: center; justify-content: center;">
@@ -134,6 +135,17 @@
                                 </span>
                             {% endif %}
                         </td>
+
+                        <td class="text-center">
+                            {% if product.expiration_date %}
+                                <span class="small fw-bold {% if product.expiration_date < today %}text-danger{% endif %}">
+                                    {{ product.expiration_date|date:"d.m.Y" }}
+                                </span>
+                            {% else %}
+                                <span class="text-muted small">-</span>
+                            {% endif %}
+                        </td>
+
                         <td class="pe-4 text-end">
                             <div class="btn-group shadow-sm rounded-pill border overflow-hidden bg-white">
                                 <a href="/admin/products/product/{{ product.id }}/change/" class="btn btn-white btn-sm px-3 border-end" title="Düzenle">
@@ -147,7 +159,7 @@
                     </tr>
                     {% empty %}
                     <tr id="emptyRow">
-                        <td colspan="5" class="text-center py-5 text-muted">
+                        <td colspan="6" class="text-center py-5 text-muted">
                             <div class="py-4">
                                 <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25 text-primary"></i>
                                 <h5 class="fw-bold">Henüz Ürün Yok</h5>
@@ -185,7 +197,7 @@
             if (!noResultMsg) {
                 let row = tableBody.insertRow();
                 row.id = 'no-results';
-                row.innerHTML = `<td colspan="5" class="text-center py-4 text-muted small italic">"${filter}" ile eşleşen ürün bulunamadı.</td>`;
+                row.innerHTML = `<td colspan="6" class="text-center py-4 text-muted small italic">"${filter}" ile eşleşen ürün bulunamadı.</td>`;
             }
         } else if (noResultMsg) {
             noResultMsg.remove();
