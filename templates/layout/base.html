@@ -124,7 +124,6 @@
                 const toast = new bootstrap.Toast(document.getElementById('liveToast'));
                 toast.show();
                 bootstrap.Modal.getInstance(document.getElementById('saleModal')).hide();
-                // Opcional: recargar después de 1 seg para ver cambios en stock
                 setTimeout(() => location.reload(), 1500);
             } else {
                 alert(data.message);
@@ -133,4 +132,71 @@
     }
     </script>
 </body>
+<footer class="bg-white text-dark mt-5 border-top border-light-subtle shadow-sm">
+    <div class="container py-5">
+        <div class="row gy-4 align-items-center">
+            
+            <div class="col-lg-5 col-md-12 text-center text-lg-start">
+                <a class="navbar-brand text-primary fw-bolder fs-3 mb-2 d-inline-block" href="/">
+                    <i class="bi bi-box-seam-fill me-2 text-primary"></i>market.erp
+                </a>
+                <p class="text-muted small mb-0 pe-lg-5">
+                    Güçlü ve kullanımı kolay ERP çözümümüzle pazar yönetimini bir üst seviyeye taşıyın. Envanter, satış ve analitiği tek bir yerden kontrol edin.
+                </p>
+            </div>
+
+            <div class="col-lg-7 col-md-12 text-center text-lg-end">
+                <h6 class="fw-bold text-dark mb-3 small text-uppercase tracking-wider">İletişim & Destek</h6>
+                
+                <div class="d-flex flex-wrap justify-content-center justify-content-lg-end align-items-center gap-4 small text-muted">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-telephone-fill text-primary"></i>
+                        <span>+90 (544) 827 51 63</span>
+                    </div>
+                    
+                    <div class="d-none d-lg-block border-start border-light-subtle" style="height: 20px;"></div>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-envelope-fill text-primary"></i>
+                        <a href="mailto:destek@marketerp.com.tr" class="text-muted text-decoration-none hover-primary">destek@marketerp.com.tr</a>
+                    </div>
+
+                    <div class="d-flex gap-3 ms-lg-3 fs-5">
+                        <i class="bi bi-facebook hover-primary" style="cursor:pointer"></i>
+                        <i class="bi bi-twitter hover-primary" style="cursor:pointer"></i>
+                        <i class="bi bi-linkedin hover-primary" style="cursor:pointer"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="border-top border-light-subtle py-3 bg-light bg-opacity-50">
+        <div class="container">
+            <div class="row align-items-center small text-muted">
+                <div class="col-md-6 text-center text-md-start">
+                    &copy; 2026 market.erp. Tüm hakları saklıdır.
+                </div>
+                <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+                    <a href="#" class="text-muted text-decoration-none me-3 hover-primary">Gizlilik Politikası</a>
+                    <a href="#" class="text-muted text-decoration-none hover-primary">Kullanım Şartları</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .hover-primary:hover {
+        color: #0d6efd !important;
+        transition: color 0.2s ease-in-out;
+    }
+    .tracking-wider {
+        letter-spacing: 0.05em;
+    }
+    .bi-box-seam-fill {
+        opacity: 0.8;
+    }
+</style>
 </html>

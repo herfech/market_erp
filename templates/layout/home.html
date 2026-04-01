@@ -3,51 +3,156 @@
 {% block title %}Ana Sayfa{% endblock %}
 
 {% block content %}
-<div class="row align-items-center py-5" style="min-height: 75vh;">
-        <div class="col-lg-8">
-        <h1 class="display-3 fw-bold mb-4" style="color: #1f2937;">
+<div class="row align-items-center py-5" style="min-height: 80vh;">
+    <div class="col-lg-7 animate-fade-in">
+        <div class="d-inline-flex align-items-center bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill small fw-bold mb-4">
+            <i class="bi bi-rocket-takeoff me-2"></i> Yeni Nesil Yönetim Sistemi
+        </div>
+        
+        <h1 class="display-3 fw-bolder mb-4" style="color: #1f2937; letter-spacing: -0.02em; line-height: 1.1;">
             Marketinizi <span style="color: #6366f1;">akıllıca</span> yönetin.
         </h1>
-        <p class="lead text-muted mb-5" style="max-width: 600px; font-size: 1.4rem;">
-            Ürün takibi, satış raporları ve envanter yönetimi artık çok daha kolay ve profesyonel. İşletmenizi bir üst seviyeye taşıyın.
+        
+        <p class="lead text-muted mb-5" style="max-width: 600px; font-size: 1.25rem; line-height: 1.6;">
+            Ürün takibi, satış raporları ve envanter yönetimi artık çok daha kolay ve profesyonel. <span class="text-dark fw-medium">market.erp</span> ile işletmenizi bir üst seviyeye taşıyın.
         </p>
-        <div class="d-flex gap-3">
+        
+        <div class="d-flex flex-wrap gap-3">
             {% if not user.is_authenticated %}
-                <a href="{% url 'signup' %}" class="btn btn-dark btn-lg rounded-pill px-5 shadow-sm">Hemen Başla</a>
-                <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg rounded-pill px-5">Giriş Yap</a>
+                <a href="{% url 'signup' %}" class="btn btn-dark btn-lg rounded-pill px-5 py-3 shadow transition-up">Hemen Başla</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg rounded-pill px-5 py-3 transition-up">Giriş Yap</a>
             {% else %}
-                <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg rounded-pill px-5 text-white shadow">Panele Git</a>
+                <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg rounded-pill px-5 py-3 text-white shadow shadow-primary transition-up">Panele Git</a>
             {% endif %}
         </div>
+
+        <div class="mt-5 d-flex gap-4 text-muted small">
+            <span><i class="bi bi-check-circle-fill text-success me-1"></i> Ücretsiz Kurulum</span>
+            <span><i class="bi bi-check-circle-fill text-success me-1"></i> Bulut Tabanlı</span>
+        </div>
     </div>
 
-    <div class="col-lg-4 d-none d-lg-block">
+    <div class="col-lg-5 d-none d-lg-block text-center position-relative">
+        <div class="hero-blob position-absolute top-50 start-50 translate-middle"></div>
         <div class="position-relative">
-            <div class="position-absolute top-50 start-50 translate-middle rounded-circle" 
-                 style="width: 300px; height: 300px; background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, rgba(255,255,255,0) 70%);">
+            <div class="bg-white shadow-lg rounded-5 p-5 d-inline-block floating-element border border-light">
+                <i class="bi bi-grid-3x3-gap-fill text-primary" style="font-size: 7rem; opacity: 0.9;"></i>
             </div>
-            <div class="text-center position-relative">
-                <i class="bi bi-grid-3x3-gap text-primary" style="font-size: 8rem; opacity: 0.2;"></i>
+            <div class="position-absolute top-0 start-100 translate-middle badge bg-success p-3 rounded-circle shadow floating-element-delay">
+                <i class="bi bi-currency-dollar fs-4 text-white"></i>
+            </div>
+            <div class="position-absolute bottom-0 start-0 translate-middle badge bg-info p-3 rounded-circle shadow floating-element">
+                <i class="bi bi-graph-up fs-4 text-white"></i>
             </div>
         </div>
     </div>
 </div>
 
-<div id="features" class="row py-5 border-top">
-    <div class="col-md-4 text-center">
-        <i class="bi bi-lightning-charge text-primary fs-1"></i>
-        <h4 class="mt-3">Hızlı Satış</h4>
-        <p class="text-muted">Saniyeler içinde işlem yapın.</p>
+<section id="features" class="py-5 border-top bg-light bg-opacity-25 rounded-5 mt-4">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 small fw-bold text-uppercase tracking-wider">Neden Biz?</span>
+            <h2 class="fw-bold mt-3" style="color: #1f2937;">İşletmenizi Büyüten Özellikler</h2>
+            <p class="text-muted mx-auto" style="max-width: 600px;">Market yönetimini kolaylaştırmak için ihtiyacınız olan tüm araçlar burada.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 feature-card transition-all">
+                    <div class="bg-primary bg-opacity-10 rounded-3 d-inline-flex align-items-center justify-content-center mb-4" style="width: 60px; height: 60px;">
+                        <i class="bi bi-lightning-charge-fill text-primary fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold h5">Hızlı Satış</h4>
+                    <p class="text-muted small mb-0">Optimize edilmiş arayüz sayesinde saniyeler içinde işlem yapın ve müşteri kuyruklarını azaltın.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 feature-card transition-all">
+                    <div class="bg-success bg-opacity-10 rounded-3 d-inline-flex align-items-center justify-content-center mb-4" style="width: 60px; height: 60px;">
+                        <i class="bi bi-shield-check-fill text-success fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold h5">Güvenli Veri</h4>
+                    <p class="text-muted small mb-0">Uçtan uca şifreleme ve bulut tabanlı yedekleme ile verileriniz her zaman koruma altında.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 feature-card transition-all">
+                    <div class="bg-info bg-opacity-10 rounded-3 d-inline-flex align-items-center justify-content-center mb-4" style="width: 60px; height: 60px;">
+                        <i class="bi bi-graph-up-arrow text-info fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold h5">Detaylı Analiz</h4>
+                    <p class="text-muted small mb-0">Satışlarınızı, envanter durumunuzu ve kâr oranlarınızı gelişmiş grafiklerle anlık izleyin.</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4 text-center">
-        <i class="bi bi-shield-check text-primary fs-1"></i>
-        <h4 class="mt-3">Güvenli Veri</h4>
-        <p class="text-muted">Verileriniz her zaman koruma altında.</p>
-    </div>
-    <div class="col-md-4 text-center">
-        <i class="bi bi-graph-up text-primary fs-1"></i>
-        <h4 class="mt-3">Detaylı Analiz</h4>
-        <p class="text-muted">Satışlarınızı grafiklerle izleyin.</p>
-    </div>
-</div>
+</section>
+
+<style>
+    /* Efectos de Hover y Animaciones */
+    .feature-card {
+        background-color: #ffffff;
+        border: 1px solid rgba(0,0,0,0.02) !important;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 1.5rem 3rem rgba(0,0,0,0.08) !important;
+    }
+
+    .transition-up {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .transition-up:hover {
+        transform: translateY(-4px);
+    }
+
+    .transition-all {
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Animación de flotado para la derecha */
+    .floating-element {
+        animation: floating 4s ease-in-out infinite;
+    }
+    
+    .floating-element-delay {
+        animation: floating 4s ease-in-out infinite;
+        animation-delay: 2s;
+    }
+
+    @keyframes floating {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Fondo decorativo Hero */
+    .hero-blob {
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, rgba(255,255,255,0) 70%);
+        border-radius: 50%;
+        z-index: -1;
+    }
+
+    .tracking-wider {
+        letter-spacing: 0.1em;
+    }
+
+    .shadow-primary {
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2) !important;
+    }
+</style>
 {% endblock %}
