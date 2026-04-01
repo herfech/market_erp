@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Product, Category
 from .forms import ProductForm
 import openpyxl
@@ -11,6 +11,14 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
+def is_admin(user):
+    return user.groups.filter(name='Admin').exists() or user.is_superuser
+
+def can_manage_products(user):
+    return (
+        is_admin(user) or 
+        user.groups.filter(name='Ürün Yönetimi (products)').exists()
+    )
 
 @login_required
 def product_list(request):
@@ -21,7 +29,8 @@ def product_list(request):
         'today': today
         })
 
-@login_required 
+@login_required
+@user_passes_test(can_manage_products)
 def product_add(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
@@ -31,10 +40,16 @@ def product_add(request):
             return redirect('product_list')
     else:
         form = ProductForm()
-    return render(request, 'products/product_form.html', {'form': form})
+    
+    return render(request, 'products/product_form.html', {
+        'form': form,
+        'full_name': request.user.get_full_name() or request.user.username,
+    })
+
 
 
 @login_required
+@user_passes_test(is_admin)
 def export_products_excel(request):
     wb = openpyxl.Workbook()
     ws = wb.active

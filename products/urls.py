@@ -6,4 +6,5 @@ urlpatterns = [
     path('add/', views.product_add, name='product_add'),
     path('export/excel/', views.export_products_excel, name='export_excel'),
     path('export/pdf/', views.export_products_pdf, name='export_pdf'),
+    path('add/', views.product_add, name='product_add'),
 ]
