@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from products.models import Product
 
 class Category(models.Model):
@@ -26,6 +27,7 @@ class Product(models.Model):
         verbose_name_plural = "Ürünler"
 
 class Sale(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Kasiyer") # NUEVO
     date = models.DateTimeField(auto_now_add=True, verbose_name="Satış Tarihi")
     total_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name="Toplam Tutar")
     payment_method = models.CharField(
@@ -37,8 +39,8 @@ class Sale(models.Model):
     is_cancelled = models.BooleanField(default=False, verbose_name="İptal Edildi")
 
     def __str__(self):
-        return f"Satış #{self.pk} - {self.date.strftime('%d/%m/%Y %H:%M') if self.date else ''}"
-
+        return f"Satış #{self.pk} - {self.user.username if self.user else 'Sistem'}"
+    
     class Meta:
         verbose_name = "Satış"
         verbose_name_plural = "Satışlar"

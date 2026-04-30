@@ -1,13 +1,23 @@
 import json
+import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db.models import Count, Sum
-from products.models import Product
+from products.models import Product, Category
 from .models import Sale, SaleDetail
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required, user_passes_test
+
+from django.conf import settings
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import mm
 
 def is_admin(user):
     return user.groups.filter(name='Admin').exists() or user.is_superuser
@@ -65,6 +75,7 @@ def dashboard(request):
    
     sales_query = Sale.objects.filter(date__date=today, is_cancelled=False).aggregate(total=Sum('total_amount'))
     total_sales_today = sales_query['total'] or 0
+    recent_sales = Sale.objects.filter(date__date=today).order_by('-date')[:5]
 
     context = {
         'team_role': team_role,
@@ -81,6 +92,7 @@ def dashboard(request):
         'labels': json.dumps(labels),
         'counts': json.dumps(counts),
         'recent_products': products.order_by('-id')[:5],
+        'recent_sales': recent_sales,
     }
     return render(request, 'sales/dashboard.html', context)
 
@@ -88,16 +100,21 @@ def dashboard(request):
 def quick_sale(request):
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
-        qty_to_sell = 1
+        qty_to_sell = int(request.POST.get('quantity', 1))
+        payment_method = request.POST.get('payment_method', 'Nakit')
+        
         try:
             product = Product.objects.get(id=product_id)
             if product.stock >= qty_to_sell:
                 product.stock -= qty_to_sell
                 product.save()
                 
+                total_amount = product.price * qty_to_sell
+                
                 new_sale = Sale.objects.create(
-                    total_amount=product.price * qty_to_sell,
-                    payment_method='Nakit'
+                    user=request.user,
+                    total_amount=total_amount,
+                    payment_method=payment_method
                 )
 
                 SaleDetail.objects.create(
@@ -105,18 +122,43 @@ def quick_sale(request):
                     product=product,
                     quantity=qty_to_sell,
                     unit_price=product.price,
-                    subtotal=product.price * qty_to_sell
+                    subtotal=total_amount
                 )
 
                 return JsonResponse({
                     'status': 'success',
+                    'sale_id': new_sale.id,
                     'price': str(product.price),
-                    'new_stock': product.stock
+                    'new_stock': product.stock,
+                    'message': 'Satış başarıyla tamamlandı!'
                 })
             return JsonResponse({'status': 'error', 'message': 'Stok yetersiz!'})
         except Product.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Ürün bulunamadı'})
     return JsonResponse({'status': 'error'})
+
+# Agrega esto al final de sales/views.py
+
+def product_search_api(request):
+    query = request.GET.get('q', '')
+    # Buscamos por nombre o por código de barras
+    products = Product.objects.filter(
+        name__icontains=query
+    ) | Product.objects.filter(
+        barcode__icontains=query
+    )
+    
+    data = []
+    for p in products[:10]:  # Limitamos a 10 resultados para que sea rápido
+        data.append({
+            'id': p.id,
+            'name': p.name,
+            'price': str(p.price),
+            'stock': p.stock,
+            'category': p.category.name if p.category else "Genel"
+        })
+    
+    return JsonResponse({'products': data})
 
 
 @login_required
@@ -151,3 +193,52 @@ def cancel_sale(request, sale_id):
         messages.warning(request, 'Bu satış zaten iptal edilmiş.')
         
     return redirect('sale_history')
+
+@login_required
+def generate_receipt_pdf(request, sale_id):
+    sale = get_object_or_404(Sale, id=sale_id)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="Fis_{sale.id}.pdf"'
+
+    font_dir = os.path.join(settings.BASE_DIR, 'templates', 'static', 'fonts')
+    pdfmetrics.registerFont(TTFont('DejaVuSans', os.path.join(font_dir, 'DejaVuSans.ttf')))
+    pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', os.path.join(font_dir, 'DejaVuSans-Bold.ttf')))
+
+    doc = SimpleDocTemplate(response, pagesize=(80*mm, 150*mm), 
+                            rightMargin=5*mm, leftMargin=5*mm, topMargin=5*mm, bottomMargin=5*mm)
+    elements = []
+    styles = getSampleStyleSheet()
+    style_center = ParagraphStyle('Center', parent=styles['Normal'], fontName='DejaVuSans', alignment=1, fontSize=9)
+    style_left = ParagraphStyle('Left', parent=styles['Normal'], fontName='DejaVuSans', fontSize=8)
+    style_bold_center = ParagraphStyle('BoldCenter', parent=styles['Normal'], fontName='DejaVuSans-Bold', alignment=1, fontSize=10)
+
+    elements.append(Paragraph("MARKET ERP SOLUTIONS", style_bold_center))
+    elements.append(Paragraph("Gümüşhane / Türkiye", style_center))
+    elements.append(Paragraph("-" * 35, style_center))
+    elements.append(Paragraph(f"Tarih: {sale.date.strftime('%d.%m.%Y %H:%M')}", style_left))
+    elements.append(Paragraph(f"Fiş No: #{sale.id}", style_left))
+    elements.append(Paragraph(f"Kasiyer: {sale.user.get_full_name() if sale.user else 'Sistem'}", style_left))
+    elements.append(Paragraph("-" * 35, style_center))
+
+
+    data = [['Ürün', 'Adet', 'Tutar']]
+    for item in sale.items.all():
+        name = (item.product.name[:15] + '..') if len(item.product.name) > 15 else item.product.name
+        data.append([name, str(item.quantity), f"{item.subtotal}"])
+
+    table = Table(data, colWidths=[35*mm, 10*mm, 20*mm])
+    table.setStyle(TableStyle([
+        ('FONTNAME', (0,0), (-1,-1), 'DejaVuSans'),
+        ('FONTSIZE', (0,0), (-1,-1), 8),
+        ('ALIGN', (1,0), (1,-1), 'CENTER'),
+        ('ALIGN', (2,0), (2,-1), 'RIGHT'),
+        ('LINEBELOW', (0,0), (-1,0), 0.5, colors.black),
+    ]))
+    elements.append(table)
+    elements.append(Paragraph("-" * 35, style_center))
+    elements.append(Paragraph(f"TOPLAM: {sale.total_amount} TL", style_bold_center))
+    elements.append(Spacer(1, 10))
+    elements.append(Paragraph("Teşekkür Ederiz!", style_center))
+
+    doc.build(elements)
+    return response

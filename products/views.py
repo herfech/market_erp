@@ -1,15 +1,22 @@
+import os
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.models import Sum, F
 from .models import Product, Category
 from .forms import ProductForm
 import openpyxl
 from django.http import HttpResponse
 from django.contrib import messages
 from django.utils import timezone
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
+from django.conf import settings
+
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
 
 def is_admin(user):
     return user.groups.filter(name='Admin').exists() or user.is_superuser
@@ -81,30 +88,85 @@ def export_products_excel(request):
 def export_products_pdf(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Envanter_Raporu.pdf"'
+    
+  
+    font_dir = os.path.join(settings.BASE_DIR, 'templates', 'static', 'fonts')
+    font_normal = os.path.join(font_dir, 'DejaVuSans.ttf')
+    font_bold = os.path.join(font_dir, 'DejaVuSans-Bold.ttf')
+    
+    try:
+        pdfmetrics.registerFont(TTFont('DejaVuSans', font_normal))
+        pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', font_bold))
+        main_font = 'DejaVuSans'
+        bold_font = 'DejaVuSans-Bold'
+    except:
+        main_font = 'Helvetica'
+        bold_font = 'Helvetica-Bold'
 
-    doc = SimpleDocTemplate(response, pagesize=A4)
+    doc = SimpleDocTemplate(response, pagesize=A4, rightMargin=30, leftMargin=30, topMargin=30, bottomMargin=30)
     elements = []
+    styles = getSampleStyleSheet()
 
-    data = [['Urun Adi', 'Kategori', 'Fiyat (TL)', 'Stok', 'SKT']]
+    turkce_normal_style = ParagraphStyle(
+        'TurkceNormal', 
+        parent=styles['Normal'], 
+        fontName=main_font, 
+        fontSize=10, 
+        spaceAfter=5
+    )
+
+    title_style = ParagraphStyle(
+        'TitleStyle', parent=styles['Heading1'], fontName=bold_font, fontSize=16, 
+        alignment=1,
+        spaceAfter=10, textColor=colors.dodgerblue
+    )
+
+    elements.append(Paragraph("ENVANTER VE STOK RAPORU", title_style))
+    elements.append(Spacer(1, 12))
+
     products = Product.objects.all()
+    total_items = products.count()
+    total_stock = products.aggregate(Sum('stock'))['stock__sum'] or 0
+    
+    elements.append(Paragraph(f"<b>Rapor Tarihi:</b> {timezone.now().strftime('%d.%m.%Y %H:%M')}", turkce_normal_style))
+    elements.append(Paragraph(f"<b>Toplam Ürün Çeşidi:</b> {total_items}", turkce_normal_style))
+    elements.append(Paragraph(f"<b>Toplam Stok Miktarı:</b> {total_stock}", turkce_normal_style))
+    elements.append(Spacer(1, 20))
+
+    data = [['Ürün Adı', 'Kategori', 'Fiyat (TL)', 'Stok', 'SKT']]
     
     for p in products:
         skt = p.expiration_date.strftime('%d.%m.%Y') if p.expiration_date else "-"
-        data.append([p.name, p.category.name if p.category else "Genel", str(p.price), str(p.stock), skt])
+        data.append([
+            p.name, 
+            p.category.name if p.category else "Genel", 
+            f"{p.price:,.2f}", 
+            str(p.stock), 
+            skt
+        ])
 
-    style = TableStyle([
+    table_style = TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('FONTNAME', (0, 0), (-1, -1), main_font),
+        ('FONTNAME', (0, 0), (-1, 0), bold_font),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('GRID', (0, 0), (-1, -1), 1, colors.grey)
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.whitesmoke, colors.white])
     ])
 
-    table = Table(data, colWidths=[150, 100, 80, 60, 90])
-    table.setStyle(style)
+    table = Table(data, colWidths=[180, 100, 80, 50, 90], repeatRows=1)
+    table.setStyle(table_style)
     elements.append(table)
     
-    doc.build(elements)
+    def footer(canvas, doc):
+        canvas.saveState()
+        canvas.setFont(main_font, 8)
+        canvas.drawString(30, 20, "Market ERP Solutions")
+        canvas.drawRightString(565, 20, f"Sayfa {doc.page}")
+        canvas.restoreState()
+
+    doc.build(elements, onFirstPage=footer, onLaterPages=footer)
     return response

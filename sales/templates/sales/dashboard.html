@@ -11,16 +11,13 @@
             </div>
             <div>
                 <h2 class="fw-bold text-dark mb-0 fs-4">Yönetim Paneli</h2>
-                
                 <div class="d-flex align-items-center mt-1 flex-wrap gap-2">
                     <small class="text-muted border-end pe-2">
                         <i class="bi bi-person-circle me-1"></i>{{ full_name }}
                     </small>
-                    
                     <span class="badge bg-dark rounded-pill" style="font-size: 0.7rem; padding: 0.35em 0.65em;">
                         <i class="bi bi-cpu me-1"></i> {{ team_role }}
                     </span>
-
                     {% if user_is_admin %}
                     <span class="badge bg-success rounded-pill" style="font-size: 0.7rem; padding: 0.35em 0.65em;">
                         <i class="bi bi-shield-check me-1"></i> Tam Yetki
@@ -162,6 +159,56 @@
     </div>
 </div>
 
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-4">
+                    <i class="bi bi-search text-primary me-2 fs-4"></i>
+                    <h5 class="fw-bold mb-0">Hızlı Ürün Sorgulama</h5>
+                </div>
+                
+                <div class="input-group input-group-lg mb-4 shadow-sm rounded-pill overflow-hidden border">
+                    <span class="input-group-text bg-white border-0 ps-4">
+                        <i class="bi bi-upc-scan text-muted"></i>
+                    </span>
+                    <input type="text" id="productSearch" class="form-control border-0 px-3" 
+                           placeholder="Ürün adı veya barkod yazın..." autocomplete="off">
+                </div>
+
+                <div id="productResults" class="row g-3">
+                    <div class="col-12 text-center py-4 text-muted">
+                        <i class="bi bi-arrow-up-circle d-block fs-1 mb-2 opacity-25"></i>
+                        Arama yapmak için bir şeyler yazın
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="quickSaleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="fw-bold">Hızlı Satış</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <div class="display-6 fw-bold text-primary mb-2" id="modalPrice">0.00 TL</div>
+                <p class="text-muted" id="modalProductName">Ürün Adı</p>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">ADET</label>
+                    <input type="number" id="saleQuantity" class="form-control form-control-lg text-center fw-bold mx-auto" 
+                           value="1" min="1" style="max-width: 120px;">
+                </div>
+                <button type="button" id="confirmSaleBtn" class="btn btn-success btn-lg rounded-pill w-100 fw-bold">
+                    <i class="bi bi-cart-check me-2"></i> Satışı Onayla
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {% if user_is_admin %}
 <div class="row mt-4 g-4">
     <div class="col-lg-8">
@@ -207,9 +254,129 @@
     </div>
 </div>
 
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0"><i class="bi bi-cart-check text-success me-2"></i>Son Satışlar</h5>
+                <a href="{% url 'sale_history' %}" class="btn btn-sm btn-outline-primary rounded-pill">Tümünü Gör</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4 border-0 small text-uppercase text-muted">ID</th>
+                                <th class="border-0 small text-uppercase text-muted">Kasiyer</th>
+                                <th class="border-0 small text-uppercase text-muted">Saat</th>
+                                <th class="border-0 small text-uppercase text-muted text-end">Toplam</th>
+                                <th class="pe-4 border-0 small text-uppercase text-muted text-center">Fiş</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sale in recent_sales %}
+                            <tr>
+                                <td class="ps-4 fw-bold">#{{ sale.id }}</td>
+                                <td>{{ sale.user.get_full_name|default:sale.user.username }}</td>
+                                <td>{{ sale.date|date:"H:i" }}</td>
+                                <td class="text-end fw-bold text-success">{{ sale.total_amount }} TL</td>
+                                <td class="pe-4 text-center">
+                                    <button onclick="printReceipt('{{ sale.id }}')" class="btn btn-sm btn-light rounded-circle shadow-sm">
+                                        <i class="bi bi-printer text-primary"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted small">Bugün henüz satış yapılmadı.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+// Función original de impresión
+function printReceipt(saleId) {
+    const url = "{% url 'generate_receipt_pdf' 0 %}".replace('0', saleId);
+    window.open(url, '_blank');
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // 1. LÓGICA DEL BUSCADOR Y TARJETAS
+    const searchInput = document.getElementById('productSearch');
+    const resultsContainer = document.getElementById('productResults');
+    const saleModal = new bootstrap.Modal(document.getElementById('quickSaleModal'));
+    let selectedProductId = null;
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        if (query.length < 2) {
+            resultsContainer.innerHTML = '<div class="col-12 text-center py-4 text-muted">Arama yapmak için en az 2 harf yazın</div>';
+            return;
+        }
+
+        fetch(`{% url "product_search_api" %}?q=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => {
+                resultsContainer.innerHTML = '';
+                if (data.products.length === 0) {
+                    resultsContainer.innerHTML = '<div class="col-12 text-center py-4 text-danger">Ürün bulunamadı</div>';
+                    return;
+                }
+                data.products.forEach(p => {
+                    const col = document.createElement('div');
+                    col.className = 'col-md-4 col-lg-3';
+                    col.innerHTML = `
+                        <div class="card h-100 border shadow-sm product-card" style="cursor:pointer" onclick="openSaleModal(${p.id}, '${p.name}', ${p.price})">
+                            <div class="card-body p-3">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-primary-subtle text-primary rounded-pill small">${p.category}</span>
+                                    <span class="fw-bold text-success">${p.price} TL</span>
+                                </div>
+                                <h6 class="fw-bold mb-1 text-truncate">${p.name}</h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Stok: ${p.stock}</small>
+                                    <i class="bi bi-plus-circle-fill text-primary fs-5"></i>
+                                </div>
+                            </div>
+                        </div>`;
+                    resultsContainer.appendChild(col);
+                });
+            });
+    });
+
+    window.openSaleModal = function(id, name, price) {
+        selectedProductId = id;
+        document.getElementById('modalProductName').innerText = name;
+        document.getElementById('modalPrice').innerText = price + ' TL';
+        document.getElementById('saleQuantity').value = 1;
+        saleModal.show();
+    };
+
+    document.getElementById('confirmSaleBtn').addEventListener('click', function() {
+        const qty = document.getElementById('saleQuantity').value;
+        fetch('{% url "quick_sale_api" %}', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}'},
+            body: JSON.stringify({product_id: selectedProductId, quantity: qty})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload(); // Recarga para actualizar ventas y stock
+            } else {
+                alert("Hata: " + data.message);
+            }
+        });
+    });
+
+    // 2. LÓGICA ORIGINAL DEL GRÁFICO
     {% if user_is_admin %}
     const ctx = document.getElementById('categoryChart');
     if (ctx) {
@@ -242,5 +409,8 @@ document.addEventListener('DOMContentLoaded', function() {
     .pulse-animation { animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
     .list-group-item:hover { background-color: #f8f9fc; }
+    /* Estilos para las nuevas tarjetas */
+    .product-card { transition: transform 0.2s, box-shadow 0.2s; border-radius: 15px; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1)!important; border-color: #4e73df!important; }
 </style>
 {% endblock %}
