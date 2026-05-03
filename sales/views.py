@@ -2,15 +2,17 @@ import json
 import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, Q  # <--- IMPORTANTE: Agregado Q aquí
 from products.models import Product, Category
 from .models import Sale, SaleDetail
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from datetime import timedelta
-from django.contrib.auth.decorators import login_required, user_passes_test
-
+from django.contrib.auth.decorators import login_required
+from django.db import models
 from django.conf import settings
+
+# PDF Imports
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib import colors
@@ -137,11 +139,8 @@ def quick_sale(request):
             return JsonResponse({'status': 'error', 'message': 'Ürün bulunamadı'})
     return JsonResponse({'status': 'error'})
 
-# Agrega esto al final de sales/views.py
-
 def product_search_api(request):
     query = request.GET.get('q', '')
-    # Buscamos por nombre o por código de barras
     products = Product.objects.filter(
         name__icontains=query
     ) | Product.objects.filter(
@@ -149,7 +148,7 @@ def product_search_api(request):
     )
     
     data = []
-    for p in products[:10]:  # Limitamos a 10 resultados para que sea rápido
+    for p in products[:10]:
         data.append({
             'id': p.id,
             'name': p.name,
@@ -160,20 +159,47 @@ def product_search_api(request):
     
     return JsonResponse({'products': data})
 
-
 @login_required
 def sale_history(request):
     today = timezone.now().date()
     sales = Sale.objects.filter(date__date=today).order_by('-date')
     
-    cash_total = sales.filter(is_cancelled=False, payment_method='Nakit').aggregate(Sum('total_amount'))['total_amount__sum'] or 0
-    card_total = sales.filter(is_cancelled=False, payment_method='Kart').aggregate(Sum('total_amount'))['total_amount__sum'] or 0
-
+    totals = sales.filter(is_cancelled=False).aggregate(
+        total=Sum('total_amount'),
+        cash=Sum('total_amount', filter=Q(payment_method='Nakit')),
+        card=Sum('total_amount', filter=Q(payment_method='Kart'))
+    )
+    
     return render(request, 'sales/sale_history.html', {
         'sales': sales,
-        'cash_total': cash_total,
-        'card_total': card_total,
-        'grand_total': cash_total + card_total
+        'grand_total': totals['total'] or 0,
+        'cash_total': totals['cash'] or 0,
+        'card_total': totals['card'] or 0,
+    })
+
+@login_required
+def full_sale_history(request):
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    
+    sales = Sale.objects.all().order_by('-date')
+    
+    if start_date and end_date:
+        sales = sales.filter(date__date__range=[start_date, end_date])
+    
+    totals = sales.filter(is_cancelled=False).aggregate(
+        total=Sum('total_amount'),
+        cash=Sum('total_amount', filter=Q(payment_method='Nakit')),
+        card=Sum('total_amount', filter=Q(payment_method='Kart'))
+    )
+
+    return render(request, 'sales/full_sale_history.html', {
+        'sales': sales,
+        'grand_total': totals['total'] or 0,
+        'cash_total': totals['cash'] or 0,
+        'card_total': totals['card'] or 0,
+        'start_date': start_date,
+        'end_date': end_date,
     })
 
 @login_required

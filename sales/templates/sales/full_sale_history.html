@@ -1,0 +1,144 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Tüm Satış Geçmişi - Market ERP{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row align-items-center mb-4">
+        <div class="col">
+            <h2 class="fw-bold text-dark mb-1">📜 Tüm Satış Geçmişi</h2>
+            <p class="text-muted mb-0">Sistemdeki tüm kayıtlar ve tarih bazlı filtreleme.</p>
+        </div>
+        <div class="col-auto">
+            <a href="{% url 'dashboard' %}" class="btn btn-white shadow-sm rounded-pill px-4 border">
+                <i class="bi bi-arrow-left me-2"></i> Panele Dön
+            </a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+            <form method="GET" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label small fw-bold text-secondary text-uppercase">Başlangıç Tarihi</label>
+                    <input type="date" name="start_date" class="form-control rounded-pill" value="{{ start_date }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small fw-bold text-secondary text-uppercase">Bitiş Tarihi</label>
+                    <input type="date" name="end_date" class="form-control rounded-pill" value="{{ end_date }}">
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary rounded-pill w-100">
+                            <i class="bi bi-filter me-2"></i> Filtrele
+                        </button>
+                        <a href="{% url 'full_sale_history' %}" class="btn btn-light rounded-pill w-100 border">
+                            Temizle
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4 py-3 text-secondary small fw-bold text-uppercase">Satış ID</th>
+                            <th class="py-3 text-secondary small fw-bold text-uppercase">Tarih ve Saat</th>
+                            <th class="py-3 text-secondary small fw-bold text-uppercase">Ürün Detayı</th>
+                            <th class="py-3 text-secondary small fw-bold text-uppercase text-end">Tutar</th>
+                            <th class="py-3 text-secondary small fw-bold text-uppercase text-center">Ödeme</th>
+                            <th class="py-3 text-secondary small fw-bold text-uppercase text-center">Durum</th>
+                            <th class="pe-4 py-3 text-secondary small fw-bold text-uppercase text-end">Yönetim</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in sales %}
+                        <tr class="{% if sale.is_cancelled %}opacity-50 text-decoration-line-through bg-light{% endif %}">
+                            <td class="ps-4 fw-bold">#{{ sale.id }}</td>
+                            <td class="text-muted small">{{ sale.date|date:"d.m.Y H:i" }}</td>
+                            <td>
+                                {% for item in sale.items.all %}
+                                <span class="badge bg-soft-primary text-primary border border-primary border-opacity-10 rounded-pill px-2">
+                                    {{ item.quantity }}x {{ item.product.name }}
+                                </span>
+                                {% endfor %}
+                            </td>
+                            <td class="text-end fw-bold">{{ sale.total_amount }} TL</td>
+                            <td class="text-center">
+                                <span class="badge {% if sale.payment_method == 'Nakit' %}bg-success{% else %}bg-info{% endif %} rounded-pill">
+                                    {{ sale.payment_method }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                {% if sale.is_cancelled %}
+                                    <span class="badge bg-danger rounded-pill">İPTAL EDİLDİ</span>
+                                {% else %}
+                                    <span class="badge bg-light text-success border border-success rounded-pill px-3">Aktif</span>
+                                {% endif %}
+                            </td>
+                            <td class="pe-4 text-end">
+                                <a href="{% url 'generate_receipt_pdf' sale.id %}" class="btn btn-sm btn-light border rounded-pill me-1">
+                                    <i class="bi bi-printer text-dark"></i>
+                                </a>
+                                {% if not sale.is_cancelled %}
+                                <form action="{% url 'cancel_sale' sale.id %}" method="POST" class="d-inline" onsubmit="return confirm('Emin misiniz?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="bi bi-search fs-1 d-block mb-2 opacity-25"></i>
+                                Belirtilen kriterlere göre satış bulunamadı.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 bg-success text-white">
+                <div class="card-body p-4 text-center">
+                    <h6 class="text-uppercase small fw-bold opacity-75">Nakit Toplam</h6>
+                    <h3 class="fw-bold mb-0">{{ cash_total }} TL</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 bg-info text-white">
+                <div class="card-body p-4 text-center">
+                    <h6 class="text-uppercase small fw-bold opacity-75">Kart Toplam</h6>
+                    <h3 class="fw-bold mb-0">{{ card_total }} TL</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 bg-dark text-white">
+                <div class="card-body p-4 text-center">
+                    <h6 class="text-uppercase small fw-bold opacity-75">Filtrelenmiş Genel Toplam</h6>
+                    <h3 class="fw-bold mb-0">{{ grand_total }} TL</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-soft-primary { background-color: rgba(13, 110, 253, 0.1); }
+    .btn-white { background: white; color: #333; }
+</style>
+{% endblock %}
