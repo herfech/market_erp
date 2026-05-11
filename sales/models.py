@@ -12,20 +12,6 @@ class Category(models.Model):
         verbose_name = "Kategori"
         verbose_name_plural = "Kategoriler"
 
-class Product(models.Model):
-    name = models.CharField(max_length=200, verbose_name="Ürün Adı")
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='products', verbose_name="Kategori")
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Fiyat")
-    stock = models.IntegerField(verbose_name="Stok")
-    barcode = models.CharField(max_length=13, null=True, blank=True, verbose_name="Barkod")
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "Ürün"
-        verbose_name_plural = "Ürünler"
-
 class Sale(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Kasiyer") # NUEVO
     date = models.DateTimeField(auto_now_add=True, verbose_name="Satış Tarihi")

@@ -129,3 +129,5 @@ BaseDatabaseFeatures.can_return_columns_from_insert = property(lambda self: Fals
 BaseDatabaseFeatures.can_return_rows_from_bulk_insert = property(lambda self: False)
 DatabaseWrapper.display_name = 'MariaDB'
 DatabaseWrapper.data_types['datetime'] = 'datetime(6)'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -42,8 +42,19 @@ def product_add(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Ürün başarıyla eklendi!')
+            name = form.cleaned_data['name']
+            new_stock = form.cleaned_data['stock']
+            product = Product.objects.filter(name__iexact=name).first()
+            
+            if product:
+                product.stock += new_stock
+                product.price = form.cleaned_data['price']
+                product.save()
+                messages.success(request, f'Stock actualizado para {product.name}.')
+            else:
+                form.save()
+                messages.success(request, 'Nuevo producto añadido con éxito.')
+            
             return redirect('product_list')
     else:
         form = ProductForm()
@@ -52,7 +63,6 @@ def product_add(request):
         'form': form,
         'full_name': request.user.get_full_name() or request.user.username,
     })
-
 
 
 @login_required
@@ -170,3 +180,22 @@ def export_products_pdf(request):
 
     doc.build(elements, onFirstPage=footer, onLaterPages=footer)
     return response
+
+from django.http import JsonResponse
+from .models import Product
+
+def product_search_api(request):
+    query = request.GET.get('q', '')
+    products = Product.objects.filter(name__icontains=query)[:10] # Filtra por nombre
+    
+    results = []
+    for p in products:
+        results.append({
+            'id': p.id,
+            'name': p.name,
+            'price': float(p.price),
+            'stock': p.stock,
+            'category': p.category.name if p.category else "Genel"
+        })
+    
+    return JsonResponse({'products': results})
