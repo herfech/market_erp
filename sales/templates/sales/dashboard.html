@@ -310,14 +310,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-
+// Función original de impresión
 function printReceipt(saleId) {
     const url = "{% url 'generate_receipt_pdf' 0 %}".replace('0', saleId);
     window.open(url, '_blank');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-
+    // 1. LÓGICA DEL BUSCADOR Y TARJETAS
     const searchInput = document.getElementById('productSearch');
     const resultsContainer = document.getElementById('productResults');
     const saleModal = new bootstrap.Modal(document.getElementById('quickSaleModal'));
@@ -378,13 +378,14 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                location.reload();
+                location.reload(); // Recarga para actualizar ventas y stock
             } else {
                 alert("Hata: " + data.message);
             }
         });
     });
 
+    // 2. LÓGICA ORIGINAL DEL GRÁFICO
     {% if user_is_admin %}
     const ctx = document.getElementById('categoryChart');
     if (ctx) {
@@ -417,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .pulse-animation { animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
     .list-group-item:hover { background-color: #f8f9fc; }
-
+    /* Estilos para las nuevas tarjetas */
     .product-card { transition: transform 0.2s, box-shadow 0.2s; border-radius: 15px; }
     .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1)!important; border-color: #4e73df!important; }
 </style>

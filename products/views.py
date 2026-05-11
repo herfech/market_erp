@@ -42,16 +42,21 @@ def product_add(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
+            # Extraemos los datos del formulario sin guardar aún
             name = form.cleaned_data['name']
             new_stock = form.cleaned_data['stock']
+            
+            # Intentamos buscar un producto con el mismo nombre
             product = Product.objects.filter(name__iexact=name).first()
             
             if product:
+                # Si existe, ACTUALIZAMOS el stock en lugar de crear uno nuevo
                 product.stock += new_stock
-                product.price = form.cleaned_data['price']
+                product.price = form.cleaned_data['price'] # Actualizamos precio por si cambió
                 product.save()
                 messages.success(request, f'Stock actualizado para {product.name}.')
             else:
+                # Si no existe, lo creamos normalmente
                 form.save()
                 messages.success(request, 'Nuevo producto añadido con éxito.')
             
