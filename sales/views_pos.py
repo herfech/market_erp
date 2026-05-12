@@ -1,7 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-# ARCHIVO DE DIAGNÓSTICO — sales/views_pos.py
-# Vista completamente nueva, independiente de views.py existente
-# ═══════════════════════════════════════════════════════════════
 import json
 from decimal import Decimal
 from django.http import JsonResponse
@@ -23,7 +19,6 @@ def pos_view(request):
         .values('id', 'name', 'price', 'stock')
         .order_by('name')
     )
-    # Convertir Decimal a float para JSON
     for p in products:
         p['price'] = float(p['price'])
 
@@ -36,11 +31,7 @@ def pos_view(request):
 @require_http_methods(["POST"])
 @transaction.atomic
 def pos_sell(request):
-    """
-    Endpoint de venta — completamente nuevo y aislado.
-    Espera: POST JSON  { "items": [{"id": 1, "qty": 2}, ...] }
-    """
-    # 1. Parsear JSON
+
     try:
         body = json.loads(request.body)
     except (json.JSONDecodeError, Exception):
@@ -50,7 +41,6 @@ def pos_sell(request):
     if not items:
         return JsonResponse({'ok': False, 'msg': 'Sepet boş'}, status=400)
 
-    # 2. Validar TODOS los productos antes de tocar nada
     validated = []
     for item in items:
         try:
@@ -61,7 +51,6 @@ def pos_sell(request):
             return JsonResponse({'ok': False, 'msg': f'Geçersiz satır: {item}'}, status=400)
 
         try:
-            # select_for_update bloquea la fila hasta que termine la transacción
             product = Product.objects.select_for_update().get(pk=pid)
         except Product.DoesNotExist:
             return JsonResponse({'ok': False, 'msg': f'Ürün bulunamadı: ID {pid}'}, status=400)
@@ -74,7 +63,6 @@ def pos_sell(request):
 
         validated.append({'product': product, 'qty': qty})
 
-    # 3. Crear la venta
     sale = Sale.objects.create(
         user=request.user,
         total_amount=Decimal('0'),
@@ -89,10 +77,8 @@ def pos_sell(request):
         price   = Decimal(str(product.price))
         sub     = price * qty
 
-        # 3a. Descontar stock
         Product.objects.filter(pk=product.pk).update(stock=product.stock - qty)
 
-        # 3b. Crear detalle
         SaleDetail.objects.create(
             sale=sale,
             product=product,
@@ -102,7 +88,6 @@ def pos_sell(request):
         )
         total += sub
 
-    # 4. Guardar total
     sale.total_amount = total
     sale.save(update_fields=['total_amount'])
 

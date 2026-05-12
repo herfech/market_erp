@@ -1,4 +1,3 @@
-/* General y Fuentes */
 body { 
     font-family: 'Inter', sans-serif; 
     letter-spacing: -0.02rem; 
@@ -6,7 +5,6 @@ body {
     color: #1f2937;
 }
 
-/* Navbar con efecto Blur */
 .navbar { 
     background-color: rgba(255, 255, 255, 0.8) !important; 
     backdrop-filter: blur(10px); 
@@ -22,7 +20,6 @@ body {
     color: #6366f1 !important; 
 }
 
-/* Botones estilo SaaS Moderno */
 .btn-primary { 
     background: #6366f1; 
     border: none; 
@@ -43,9 +40,8 @@ body {
     transition: 0.3s ease;
 }
 
-/* Tarjetas (Cards) */
 .card { 
-    border: none !important; /* Aseguramos que no haya bordes de bootstrap */
+    border: none !important;
     border-radius: 16px; 
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); 
     transition: 0.3s;
@@ -56,7 +52,6 @@ body {
     box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
 }
 
-/* Efecto Gradiente de You.com */
 .text-gradient {
     background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
     -webkit-background-clip: text;
@@ -64,13 +59,13 @@ body {
     display: inline-block;
 }
 
-/* Elementos de Soporte (Badges e Iconos) */
+
 .bg-soft-primary {
     background-color: #e0e7ff !important;
     color: #6366f1 !important;
 }
 
-.rounded-circle-icon { /* Nombre más específico para evitar choques */
+.rounded-circle-icon { 
     width: 48px;
     height: 48px;
     display: flex;
@@ -79,7 +74,6 @@ body {
     border-radius: 50%;
 }
 
-/* Ajustes para la tabla de inventario */
 .table thead th {
     background-color: #f8fafc;
     border-top: none;
@@ -109,12 +103,10 @@ body {
     color: #1f2937;
 }
 
-/* Badge de opacidad para Dashboard e Inventario */
 .bg-opacity-10 {
     --bs-bg-opacity: 0.15 !important;
 }
 
-/* Inputs Modernos para Login/Signup */
 .form-control {
     border-radius: 10px;
     padding: 0.6rem 1rem;
@@ -127,7 +119,6 @@ body {
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-/* templates/style/main.css */
 
 .search-bar .input-group-text {
     border: 1px solid #e2e8f0;

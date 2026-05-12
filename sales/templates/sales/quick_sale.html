@@ -5,7 +5,6 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; }
 
-/* ── LAYOUT ── */
 .pos-wrap {
     display: grid;
     grid-template-columns: 1fr 400px;
@@ -13,7 +12,6 @@
     overflow: hidden;
 }
 
-/* ── CATÁLOGO ── */
 .pos-catalog {
     background: #f5f6fa;
     display: flex;
@@ -42,7 +40,6 @@
 }
 .pos-search:focus { border-color: #4f7ef8; background: #fff; }
 
-/* ── BOTONES DE VISTA ── */
 .view-switcher {
     display: flex;
     gap: 2px;
@@ -63,10 +60,10 @@
 
 .pos-count { font-size: 12px; color: #9ca3af; white-space: nowrap; }
 
-/* ── CONTENEDOR PRODUCTOS ── */
+
 .pos-products { flex: 1; overflow-y: auto; padding: 14px; }
 
-/* VIEW: GRID (mosaico) */
+
 .view-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
@@ -93,7 +90,7 @@
 .stock-low  { background: #fef3c7; color: #92400e; }
 .stock-zero { background: #fee2e2; color: #991b1b; }
 
-/* VIEW: LIST (lista simple) */
+
 .view-list { display: flex; flex-direction: column; gap: 6px; }
 .prod-list-row {
     background: #fff;
@@ -112,7 +109,7 @@
 .pl-name  { font-weight: 600; font-size: 13px; color: #1a1d23; flex: 1; }
 .pl-price { font-weight: 700; font-size: 13px; color: #16a34a; white-space: nowrap; }
 
-/* VIEW: TABLE (detalles) */
+
 .view-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
 .view-table thead th {
     background: #f8fafc; padding: 10px 14px;
@@ -128,7 +125,7 @@
 .td-name  { font-weight: 600; color: #1a1d23; }
 .td-price { font-weight: 700; color: #16a34a; }
 
-/* VIEW: CONTENT (tarjetas horizontales) */
+
 .view-content { display: flex; flex-direction: column; gap: 8px; }
 .prod-content-card {
     background: #fff;
@@ -160,7 +157,7 @@
 
 .pos-empty { text-align: center; padding: 60px 20px; color: #9ca3af; font-size: 14px; }
 
-/* ── CARRITO ── */
+
 .pos-cart {
     background: #fff;
     border-left: 1px solid #e4e7ec;
@@ -190,7 +187,6 @@
     height: 100%; color: #d1d5db; font-size: 13px; gap: 10px;
 }
 
-/* ── FILA DEL CARRITO ── */
 .cart-row {
     padding: 10px 14px;
     border-bottom: 1px solid #f3f4f6;
@@ -210,7 +206,7 @@
 
 .cart-row-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 
-/* Controles de cantidad */
+
 .qty-controls { display: flex; align-items: center; gap: 6px; }
 .qty-btn {
     width: 28px; height: 28px; border-radius: 50%;
@@ -222,7 +218,7 @@
 }
 .qty-btn:hover { background: #4f7ef8; border-color: #4f7ef8; color: #fff; }
 
-/* Input manual de cantidad */
+
 .qty-input {
     width: 48px; height: 28px;
     border: 1.5px solid #e4e7ec;
@@ -238,10 +234,10 @@
 .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .qty-input:focus { border-color: #4f7ef8; }
 
-/* Precio unitario */
+
 .cr-unit-price { font-size: 11px; color: #9ca3af; }
 
-/* Botón eliminar */
+
 .cr-delete {
     width: 28px; height: 28px;
     border-radius: 6px;
@@ -255,7 +251,7 @@
 .cr-delete:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 .cr-delete svg   { width: 14px; height: 14px; }
 
-/* ── FOOTER ── */
+
 .cart-footer { padding: 14px 16px; border-top: 1px solid #e4e7ec; }
 .cart-total-row {
     display: flex; justify-content: space-between;
@@ -288,7 +284,7 @@
 .btn-sell:active:not(:disabled){ transform: scale(.98); }
 .btn-sell:disabled { background: #d1d5db; cursor: not-allowed; }
 
-/* ── TOAST ── */
+
 #pos-toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
     padding: 11px 22px; border-radius: 10px;
@@ -306,14 +302,12 @@
 
 <div class="pos-wrap">
 
-    <!-- ══ CATÁLOGO ══ -->
     <div class="pos-catalog">
         <div class="pos-toolbar">
             <input class="pos-search" id="pos-search" type="text" placeholder="Ürün ara...">
 
-            <!-- Selector de vista -->
             <div class="view-switcher">
-                <!-- Lista -->
+
                 <button class="vbtn active" id="vbtn-list" onclick="POS.setView('list',this)" title="Liste">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="8" y1="6"  x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
@@ -323,7 +317,7 @@
                         <circle cx="3" cy="18" r="1.5" fill="currentColor" stroke="none"/>
                     </svg>
                 </button>
-                <!-- Detalles / tabla -->
+
                 <button class="vbtn" id="vbtn-table" onclick="POS.setView('table',this)" title="Detaylar">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -332,7 +326,7 @@
                         <line x1="9" y1="3"  x2="9"  y2="21"/>
                     </svg>
                 </button>
-                <!-- Mosaico / grid -->
+
                 <button class="vbtn" id="vbtn-grid" onclick="POS.setView('grid',this)" title="Mozaik">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3"  y="3"  width="7" height="7" rx="1"/>
@@ -341,7 +335,7 @@
                         <rect x="14" y="14" width="7" height="7" rx="1"/>
                     </svg>
                 </button>
-                <!-- Contenido / tarjetas -->
+
                 <button class="vbtn" id="vbtn-content" onclick="POS.setView('content',this)" title="İçerik">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="4" width="18" height="5" rx="1"/>
@@ -356,7 +350,6 @@
         <div class="pos-products" id="pos-products"></div>
     </div>
 
-    <!-- ══ CARRITO ══ -->
     <div class="pos-cart">
         <div class="cart-header">
             <span class="cart-title">
@@ -396,23 +389,20 @@ const CSRF    = '{{ csrf_token }}';
 const API_URL = '{% url "pos_sell" %}';
 
 const POS = (() => {
-    let cart    = {};       // { id: { ...product, qty } }
+    let cart    = {};
     let payment = 'Nakit';
-    let view    = 'list';   // list | table | grid | content
+    let view    = 'list'; 
 
-    // ── SVG del icono de producto ────────────────────────────────────────────
     const iconSVG = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
     </svg>`;
 
-    // ── Badge de stock ────────────────────────────────────────────────────────
     function stockBadge(p) {
         const cls   = p.stock === 0 ? 'stock-zero' : p.stock <= 5 ? 'stock-low' : 'stock-ok';
         const label = p.stock === 0 ? 'Tükendi' : `${p.stock} adet`;
         return `<span class="prod-stock ${cls}">${label}</span>`;
     }
 
-    // ── Renderizar catálogo ───────────────────────────────────────────────────
     function renderCatalog(filter = '') {
         const container = document.getElementById('pos-products');
         const counter   = document.getElementById('pos-count');
@@ -463,7 +453,7 @@ const POS = (() => {
                     </tbody>
                 </table>`;
 
-        } else { // content
+        } else { 
             container.className = 'pos-products view-content';
             container.innerHTML = list.map(p => `
                 <div class="prod-content-card ${p.stock===0?'zero':''}" onclick="POS.add(${p.id})">
@@ -480,7 +470,6 @@ const POS = (() => {
         }
     }
 
-    // ── Renderizar carrito ────────────────────────────────────────────────────
     function renderCart() {
         const container = document.getElementById('cart-items');
         const totalEl   = document.getElementById('cart-total');
@@ -538,7 +527,6 @@ const POS = (() => {
         sellBtn.disabled    = false;
     }
 
-    // ── Cambiar vista ─────────────────────────────────────────────────────────
     function setView(v, btn) {
         view = v;
         document.querySelectorAll('.vbtn').forEach(b => b.classList.remove('active'));
@@ -546,7 +534,6 @@ const POS = (() => {
         renderCatalog(document.getElementById('pos-search').value);
     }
 
-    // ── Acciones carrito ──────────────────────────────────────────────────────
     function add(id) {
         const p = CATALOG.find(x => x.id === id);
         if (!p || p.stock === 0) return;
@@ -568,7 +555,6 @@ const POS = (() => {
         renderCart();
     }
 
-    // Edición manual de cantidad
     function setQty(id, val) {
         const qty = parseInt(val, 10);
         const p   = CATALOG.find(x => x.id === id);
@@ -584,7 +570,6 @@ const POS = (() => {
         renderCart();
     }
 
-    // Eliminar producto específico
     function remove(id) {
         delete cart[id];
         renderCart();
@@ -603,7 +588,6 @@ const POS = (() => {
         btn.classList.add('active');
     }
 
-    // ── Venta ─────────────────────────────────────────────────────────────────
     async function sell() {
         const items = Object.values(cart).map(i => ({ id: i.id, qty: i.qty }));
         if (!items.length) return;
@@ -623,7 +607,7 @@ const POS = (() => {
             catch { throw new Error('Sunucu geçersiz yanıt döndürdü'); }
 
             if (data.ok) {
-                // Actualizar stock local
+
                 items.forEach(i => {
                     const p = CATALOG.find(x => x.id === i.id);
                     if (p) p.stock -= i.qty;
@@ -643,7 +627,6 @@ const POS = (() => {
         }
     }
 
-    // ── Toast ─────────────────────────────────────────────────────────────────
     let toastTimer;
     function toast(msg, type = 'ok') {
         const el     = document.getElementById('pos-toast');
@@ -653,7 +636,6 @@ const POS = (() => {
         toastTimer = setTimeout(() => el.className = '', 3500);
     }
 
-    // ── Init ──────────────────────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
         renderCatalog();
         renderCart();
