@@ -16,7 +16,6 @@ from django.conf import settings
 from products.models import Product
 from .models import Sale, SaleDetail
 
-# PDF
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib import colors
