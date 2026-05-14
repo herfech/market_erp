@@ -15,8 +15,31 @@ SECRET_KEY = 'django-insecure-2#(^+r&w3oiz6s(kmw19-e&xq0ho=a_%p72m&%*hf(kj-xrog=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+# --- CONFIGURACIÓN PARA NGROK Y ACCESO PÚBLICO ---
+
+# Permite cualquier dominio de entrada
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://commanding-keila-noncontemptibly.ngrok-free.dev']
+
+# Confía en el dominio de ngrok para formularios y login
+CSRF_TRUSTED_ORIGINS = [
+    'https://commanding-keila-noncontemptibly.ngrok-free.dev',
+    'http://commanding-keila-noncontemptibly.ngrok-free.dev',
+]
+
+# Estas líneas son CRUCIALES para que Django acepte los encabezados de ngrok
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+
+# Configuración de Cookies para compartir el enlace
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
+
+# --- FIN DE CONFIGURACIÓN NGROK ---
+
 
 
 # Application definition
